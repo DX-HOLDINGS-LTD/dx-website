@@ -5,7 +5,7 @@ import {
   ChevronRight, CircleDollarSign, Clock3, CreditCard, Download, ExternalLink,
   Facebook, Globe2, History, Instagram, Landmark, Linkedin, LockKeyhole,
   Menu, Minus, Phone, QrCode, Send, ShieldCheck, Smartphone, Sparkles,
-  TrendingUp, WalletCards, X, Youtube, Zap,
+  WalletCards, X, Youtube, Zap,
   type LucideIcon,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -130,7 +130,7 @@ function ExternalAndWhy() { const why: ReadonlyArray<readonly [LucideIcon,string
 function DXCard() {
   const creationSteps = [
     ["01", "Join DX", "Create your DX profile and complete the required identity checks."],
-    ["02", "Request your card", "Choose a virtual or physical card when card access becomes available."],
+    ["02", "Request your card", "Submit your card request when card access becomes available."],
     ["03", "Add funds", "Move money from your DX USDT balance onto your card."],
     ["04", "Start spending", "Use your card wherever the supported card network is accepted."],
   ] as const;
