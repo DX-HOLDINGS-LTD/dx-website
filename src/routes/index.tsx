@@ -17,9 +17,9 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, Di
 
 export const Route = createFileRoute("/")({
   head: () => ({ meta: [
-    { title: "DX Wallet — Digital Dollars, Made Simple" },
-    { name: "description", content: "Buy, sell, send and manage USDT through a simple wallet built for The Gambia. Join the DX Wallet waitlist." },
-    { property: "og:title", content: "DX Wallet — Digital Dollars, Made Simple" },
+    { title: "DX — Digital Dollars, Made Simple" },
+    { name: "description", content: "Buy, sell, send and manage USDT through DX, built for The Gambia." },
+    { property: "og:title", content: "DX — Digital Dollars, Made Simple" },
     { property: "og:description", content: "Your gateway to simple digital finance, built for The Gambia." },
     { property: "og:type", content: "website" },
     { name: "twitter:card", content: "summary_large_image" },
@@ -28,33 +28,33 @@ export const Route = createFileRoute("/")({
 });
 
 const nav = [
-  ["Home", "top"], ["DX Wallet", "wallet"], ["How It Works", "how-it-works"],
-  ["Coming Soon", "coming-soon"], ["FAQ", "faq"],
+  ["Home", "top"], ["DX", "wallet"], ["How It Works", "how-it-works"],
+  ["DX Card", "dx-card"], ["FAQ", "faq"],
 ] as const;
 
 function Brand({ inverse = false }: { inverse?: boolean }) {
-  return <a href="#top" className={`flex items-center gap-2.5 font-extrabold text-xl ${inverse ? "text-dark-foreground" : "text-foreground"}`} aria-label="DX Wallet home">
+  return <a href="#top" className={`flex items-center gap-2.5 font-extrabold text-xl ${inverse ? "text-dark-foreground" : "text-foreground"}`} aria-label="DX home">
     <span className="grid size-9 place-items-center rounded-md bg-primary text-sm text-primary-foreground">DX</span>
-    <span>DX Wallet</span>
+    <span>DX</span>
   </a>;
 }
 
 function SiteHeader() {
   const [open, setOpen] = useState(false);
   useEffect(() => { document.body.style.overflow = open ? "hidden" : ""; return () => { document.body.style.overflow = ""; }; }, [open]);
-  return <header className="absolute inset-x-0 top-0 z-40 border-b border-dark-border bg-dark/80 backdrop-blur-lg">
+  return <header className="absolute inset-x-0 top-0 z-40 border-b border-border bg-background/85 backdrop-blur-lg">
     <div className="mx-auto grid h-20 max-w-7xl grid-cols-[minmax(0,1fr)_auto] items-center px-5 sm:px-8 lg:px-10">
-      <Brand inverse />
+      <Brand />
       <nav className="hidden items-center gap-8 lg:flex" aria-label="Main navigation">
-        {nav.map(([label, id]) => <a key={id} href={`#${id}`} className="text-sm font-medium text-dark-foreground/70 transition-colors hover:text-dark-foreground">{label}</a>)}
-        <Button asChild size="lg" variant="hero"><a href="#waitlist">Join Waitlist</a></Button>
+        {nav.map(([label, id]) => <a key={id} href={`#${id}`} className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground">{label}</a>)}
+        <Button asChild size="lg"><a href="#waitlist">Join Waitlist</a></Button>
       </nav>
-      <Button variant="ghost" size="icon" className="size-11 text-dark-foreground hover:bg-dark-surface hover:text-dark-foreground lg:hidden" onClick={() => setOpen(!open)} aria-expanded={open} aria-controls="mobile-nav" aria-label={open ? "Close navigation" : "Open navigation"}>{open ? <X /> : <Menu />}</Button>
+      <Button variant="ghost" size="icon" className="size-11 lg:hidden" onClick={() => setOpen(!open)} aria-expanded={open} aria-controls="mobile-nav" aria-label={open ? "Close navigation" : "Open navigation"}>{open ? <X /> : <Menu />}</Button>
     </div>
-    {open && <div id="mobile-nav" className="absolute inset-x-0 top-20 border-b border-dark-border bg-dark p-5 shadow-2xl lg:hidden">
+    {open && <div id="mobile-nav" className="absolute inset-x-0 top-20 border-b border-border bg-background p-5 shadow-2xl lg:hidden">
       <nav className="mx-auto flex max-w-7xl flex-col" aria-label="Mobile navigation">
-        {nav.map(([label, id]) => <a key={id} href={`#${id}`} onClick={() => setOpen(false)} className="border-b border-dark-border py-4 text-base font-semibold text-dark-foreground">{label}</a>)}
-        <Button asChild size="lg" variant="hero" className="mt-5 w-full"><a href="#waitlist" onClick={() => setOpen(false)}>Join Waitlist</a></Button>
+        {nav.map(([label, id]) => <a key={id} href={`#${id}`} onClick={() => setOpen(false)} className="border-b border-border py-4 text-base font-semibold text-foreground">{label}</a>)}
+        <Button asChild size="lg" className="mt-5 w-full"><a href="#waitlist" onClick={() => setOpen(false)}>Join Waitlist</a></Button>
       </nav>
     </div>}
   </header>;
@@ -63,38 +63,34 @@ function SiteHeader() {
 function PreviewPill() { return <span className="inline-flex items-center gap-1.5 rounded-full border border-dark-border bg-dark-surface px-3 py-1 text-[11px] font-semibold text-dark-foreground/70"><Sparkles className="size-3" /> Product preview</span>; }
 
 function WalletPhone() {
-  return <div className="phone-float relative mx-auto w-full max-w-[340px] rounded-[2.5rem] border-[7px] border-dark-soft bg-background p-2.5 shadow-[0_35px_90px_-30px_oklch(0_0_0/.7)]">
-    <div className="overflow-hidden rounded-[1.8rem] bg-surface p-5 text-foreground">
-      <div className="mb-7 flex items-center justify-between"><span className="font-extrabold">DX Wallet</span><div className="grid size-9 place-items-center rounded-full bg-brand-soft"><span className="text-xs font-bold">BJ</span></div></div>
-      <div className="rounded-xl bg-dark p-5 text-dark-foreground">
-        <p className="text-xs text-dark-foreground/60">Total balance</p><p className="mt-1 text-3xl font-bold">$1,240.50</p><p className="mt-2 flex items-center gap-1 text-xs text-primary"><TrendingUp className="size-3" /> +4.8% this month</p>
+  return <div className="phone-float relative mx-auto w-full max-w-[360px] rounded-[2.5rem] border-[7px] border-foreground bg-background p-2.5 shadow-2xl">
+    <div className="overflow-hidden rounded-[1.8rem] bg-background p-5 text-foreground">
+      <div className="mb-10 flex items-center justify-between"><span className="grid size-9 place-items-center rounded-md bg-primary text-xs font-extrabold text-primary-foreground">DX</span><span className="rounded-full bg-brand-soft px-3 py-1 text-[10px] font-bold text-primary-hover">SIMPLE &amp; SECURE</span></div>
+      <div className="flex items-center justify-center gap-3">
+        <div className="rounded-xl border border-border bg-surface p-4 text-center"><span className="mx-auto grid size-9 place-items-center rounded-lg bg-primary text-sm font-bold text-primary-foreground">D</span><p className="mt-2 text-[10px] text-muted-foreground">Dalasi</p><p className="font-extrabold">750</p></div>
+        <ArrowRight className="size-5 text-primary-hover" />
+        <div className="rounded-xl bg-dark p-5 text-center text-dark-foreground shadow-xl"><p className="text-[10px] font-bold text-primary">DX</p><p className="mt-2 text-2xl font-extrabold">$10</p><p className="text-[10px] text-dark-foreground/60">USDT balance</p></div>
+        <ArrowRight className="size-5 text-primary-hover" />
+        <div className="rounded-xl border border-border bg-surface p-4 text-center"><span className="mx-auto grid size-9 place-items-center rounded-lg bg-brand-soft text-sm font-bold text-primary-hover">$</span><p className="mt-2 text-[10px] text-muted-foreground">USDT</p><p className="font-extrabold">10.00</p></div>
       </div>
-      <div className="my-6 grid grid-cols-3 gap-3">
-        {([[Download,"Buy"],[ArrowUpRight,"Sell"],[Send,"Send"]] satisfies ReadonlyArray<readonly [LucideIcon,string]>).map(([Icon,label]) => <div key={label} className="text-center"><div className="mx-auto grid size-11 place-items-center rounded-full bg-brand-soft text-primary-hover"><Icon className="size-5" /></div><span className="mt-2 block text-xs font-semibold">{label}</span></div>)}
-      </div>
-      <div className="flex items-center justify-between"><p className="text-sm font-bold">Recent activity</p><History className="size-4 text-muted-foreground" /></div>
-      <div className="mt-3 space-y-2">
-        {([ [ArrowDownLeft,"Received","+125 USDT","positive"], [ArrowUpRight,"Sent","-50 USDT","foreground"], [ArrowDownLeft,"Purchased","+300 USDT","positive"] ] satisfies ReadonlyArray<readonly [LucideIcon,string,string,string]>).map(([Icon,label,amount,color]) => <div key={amount} className="flex items-center gap-3 rounded-lg bg-background p-3"><span className="grid size-9 place-items-center rounded-full bg-secondary"><Icon className="size-4" /></span><div className="min-w-0 flex-1"><p className="text-xs font-bold">{label}</p><p className="text-[10px] text-muted-foreground">Today</p></div><span className={`text-xs font-bold ${color === "positive" ? "text-positive" : "text-foreground"}`}>{amount}</span></div>)}
-      </div>
+      <div className="mt-7 flex flex-wrap justify-center gap-2">{["Wave","Afrimoney","QMoney","Bank"].map(method=><span key={method} className="rounded-full border border-border bg-surface px-2.5 py-1 text-[10px] font-bold">{method}</span>)}</div>
+      <div className="mt-7 text-center"><p className="text-2xl font-extrabold leading-tight">Buy Digital<br/>Dollars</p><p className="mx-auto mt-3 max-w-[270px] text-xs leading-5 text-muted-foreground">Purchase USDT quickly and securely with a simple, trusted experience.</p></div>
     </div>
   </div>;
 }
 
 function Hero() {
-  return <section id="top" className="relative overflow-hidden bg-dark pt-32 text-dark-foreground sm:pt-36">
-    <div className="pointer-events-none absolute left-[52%] top-32 h-px w-80 bg-primary/50" />
+  return <section id="top" className="relative overflow-hidden bg-brand-soft pt-32 text-foreground sm:pt-36">
     <div className="mx-auto grid min-h-[760px] max-w-7xl items-center gap-16 px-5 pb-20 sm:px-8 lg:grid-cols-[1.02fr_.98fr] lg:px-10 lg:pb-24">
       <div className="section-reveal relative z-10 max-w-2xl">
-        <p className="mb-6 flex items-center gap-2 text-sm font-semibold text-primary"><Globe2 className="size-4" /> Your Gateway to Global Finance.</p>
-        <h1 className="text-[clamp(3.2rem,8vw,6.8rem)] font-extrabold leading-[.96] tracking-[0]">Digital Dollars,<br/><span className="text-primary">Made Simple.</span></h1>
-        <p className="mt-7 max-w-xl text-lg leading-8 text-dark-foreground/68">Buy, sell, send and manage USDT through a simple wallet built for The Gambia.</p>
-        <div className="mt-9 flex flex-col gap-3 sm:flex-row"><Button asChild size="lg" variant="hero"><a href="#waitlist">Join the Waitlist <ArrowRight /></a></Button><Button asChild size="lg" variant="heroOutline"><a href="#how-it-works">See How It Works</a></Button></div>
-        <p className="mt-5 flex items-center gap-2 text-xs text-dark-foreground/50"><ShieldCheck className="size-4 text-primary" /> Launching in The Gambia · Join free</p>
+        <p className="mb-6 flex items-center gap-2 text-sm font-semibold text-primary-hover"><ShieldCheck className="size-4" /> Simple &amp; Secure</p>
+        <h1 className="text-[clamp(3.2rem,8vw,6.8rem)] font-extrabold leading-[.96] tracking-[0]">Buy Digital<br/><span className="text-primary-hover">Dollars.</span></h1>
+        <p className="mt-7 max-w-xl text-lg leading-8 text-muted-foreground">Purchase USDT quickly and securely using supported local payment methods. No complicated platforms—just a simple, trusted way to access digital dollars.</p>
+        <div className="mt-9 flex flex-col gap-3 sm:flex-row"><Button asChild size="lg"><a href="#waitlist">Join the Waitlist <ArrowRight /></a></Button><Button asChild size="lg" variant="outline"><a href="#how-it-works">See How It Works</a></Button></div>
+        <p className="mt-5 flex items-center gap-2 text-xs text-muted-foreground"><Globe2 className="size-4 text-primary-hover" /> Built in The Gambia · Join free</p>
       </div>
       <div className="relative mx-auto w-full max-w-lg pb-4 pt-6">
-        <div className="absolute -left-3 top-36 z-10 hidden rounded-lg border border-dark-border bg-dark-surface p-3 text-dark-foreground shadow-xl sm:block"><p className="text-[10px] text-dark-foreground/50">Available balance</p><p className="text-sm font-bold text-primary">1,240.50 USDT</p></div>
         <WalletPhone />
-        <div className="absolute -right-1 bottom-24 z-10 hidden items-center gap-2 rounded-lg border border-dark-border bg-dark-surface p-3 text-dark-foreground shadow-xl sm:flex"><span className="grid size-8 place-items-center rounded-full bg-primary text-primary-foreground"><Check className="size-4" /></span><div><p className="text-[10px] text-dark-foreground/50">Payment received</p><p className="text-xs font-bold">+125 USDT</p></div></div>
       </div>
     </div>
   </section>;
