@@ -77,9 +77,9 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "DX Wallet" },
+      { title: "DX" },
       { name: "description", content: "Digital dollars, made simple for The Gambia." },
-      { name: "author", content: "DX Wallet" },
+      { name: "author", content: "DX" },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
