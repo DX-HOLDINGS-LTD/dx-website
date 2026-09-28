@@ -6,16 +6,16 @@ This is **Version 1 of the DX Wallet PUBLIC WEBSITE only**.
 
 IMPORTANT SCOPE:
 
-* Build the frontend/UI and frontend interactions only.
-* Do NOT build a real wallet.
-* Do NOT build authentication or login.
-* Do NOT build financial transactions.
-* Do NOT integrate Wave, Afrimoney, banks, blockchain, crypto exchanges, or payment providers.
-* Do NOT build a financial dashboard.
-* Do NOT build an admin dashboard.
-* Do NOT expose confidential future products.
-* The Buy, Sell, Send, Deposit and Withdraw experiences shown on the website are product demonstrations/mockups only.
-* Waitlist and contact functionality should have polished frontend forms, but backend/database/email integration will be handled separately later.
+- Build the frontend/UI and frontend interactions only.
+- Do NOT build a real wallet.
+- Do NOT build authentication or login.
+- Do NOT build financial transactions.
+- Do NOT integrate Wave, Afrimoney, banks, blockchain, crypto exchanges, or payment providers.
+- Do NOT build a financial dashboard.
+- Do NOT build an admin dashboard.
+- Do NOT expose confidential future products.
+- The Buy, Sell, Send, Deposit and Withdraw experiences shown on the website are product demonstrations/mockups only.
+- Waitlist and contact functionality should have polished frontend forms, but backend/database/email integration will be handled separately later.
 
 The website should feel like a real, ambitious fintech product — not a generic company website.
 
@@ -37,16 +37,16 @@ The Gambia
 
 Brand personality:
 
-* Modern
-* Trustworthy
-* Premium
-* Simple
-* Local
-* Global
-* Confident
-* Beginner-friendly
-* Technologically sophisticated
-* Human
+- Modern
+- Trustworthy
+- Premium
+- Simple
+- Local
+- Global
+- Confident
+- Beginner-friendly
+- Technologically sophisticated
+- Human
 
 The website should communicate that DX Wallet is serious financial technology without making the experience feel complicated or overly "crypto".
 
@@ -56,9 +56,9 @@ VISUAL DIRECTION
 
 Use a sophisticated combination of:
 
-* Emerald green
-* Black / deep charcoal
-* White
+- Emerald green
+- Black / deep charcoal
+- White
 
 Primary brand green:
 #10B981
@@ -79,20 +79,20 @@ Do not make the entire website green.
 
 Green should function as the DX brand signal:
 
-* primary CTA buttons
-* active states
-* highlights
-* important UI elements
-* positive transaction indicators
-* subtle decorative accents
+- primary CTA buttons
+- active states
+- highlights
+- important UI elements
+- positive transaction indicators
+- subtle decorative accents
 
 Black/deep charcoal should create premium contrast:
 
-* hero
-* major product showcase sections
-* selected CTA sections
-* footer
-* selected feature areas
+- hero
+- major product showcase sections
+- selected CTA sections
+- footer
+- selected feature areas
 
 White/light sections should provide breathing room.
 
@@ -111,10 +111,10 @@ Do not randomly mix fonts.
 
 Typography should feel:
 
-* clean
-* premium
-* highly readable
-* modern fintech
+- clean
+- premium
+- highly readable
+- modern fintech
 
 Use strong typographic hierarchy.
 
@@ -132,16 +132,16 @@ Create a consistent design system across the entire website.
 
 Use consistent:
 
-* border radius
-* spacing
-* button styles
-* card styles
-* shadows
-* iconography
-* typography
-* input styles
-* hover states
-* transitions
+- border radius
+- spacing
+- button styles
+- card styles
+- shadows
+- iconography
+- typography
+- input styles
+- hover states
+- transitions
 
 Use generous whitespace.
 
@@ -187,9 +187,9 @@ Use a dark/black navigation treatment when appropriate, particularly over the he
 
 On mobile:
 
-* hamburger menu
-* clean slide/dropdown navigation
-* prominent Join Waitlist CTA
+- hamburger menu
+- clean slide/dropdown navigation
+- prominent Join Waitlist CTA
 
 Navigation must work smoothly.
 
@@ -571,11 +571,11 @@ For now, implement polished frontend validation and interaction states only.
 
 Create:
 
-* default state
-* focused state
-* validation/error state
-* loading state
-* success state
+- default state
+- focused state
+- validation/error state
+- loading state
+- success state
 
 Success message:
 
@@ -730,16 +730,16 @@ The website must be designed mobile-first.
 
 Pay particular attention to:
 
-* phones
-* small Android devices
-* touch targets
-* readable typography
-* navigation
-* forms
-* app mockups
-* horizontal overflow prevention
-* spacing
-* button sizing
+- phones
+- small Android devices
+- touch targets
+- readable typography
+- navigation
+- forms
+- app mockups
+- horizontal overflow prevention
+- spacing
+- button sizing
 
 Do not simply shrink the desktop design.
 
@@ -755,21 +755,21 @@ Use subtle premium animations only.
 
 Include:
 
-* smooth scrolling
-* fade/slide section reveals
-* subtle card hover
-* button hover
-* mobile menu animation
-* FAQ accordion animation
-* waitlist success animation
-* subtle product mockup entrance
+- smooth scrolling
+- fade/slide section reveals
+- subtle card hover
+- button hover
+- mobile menu animation
+- FAQ accordion animation
+- waitlist success animation
+- subtle product mockup entrance
 
 Avoid:
 
-* excessive parallax
-* distracting moving backgrounds
-* excessive bouncing
-* unnecessary animation everywhere
+- excessive parallax
+- distracting moving backgrounds
+- excessive bouncing
+- unnecessary animation everywhere
 
 The website should feel fast.
 
@@ -779,14 +779,14 @@ ACCESSIBILITY
 
 Use:
 
-* semantic HTML
-* accessible buttons
-* proper labels
-* keyboard navigation
-* sufficient color contrast
-* visible focus states
-* alt text for meaningful images
-* accessible FAQ accordion behavior
+- semantic HTML
+- accessible buttons
+- proper labels
+- keyboard navigation
+- sufficient color contrast
+- visible focus states
+- alt text for meaningful images
+- accessible FAQ accordion behavior
 
 ==================================================
 PERFORMANCE
@@ -794,12 +794,12 @@ PERFORMANCE
 
 Prioritize:
 
-* fast loading
-* optimized images
-* minimal unnecessary dependencies
-* responsive images
-* clean component structure
-* no bloated libraries unless necessary
+- fast loading
+- optimized images
+- minimal unnecessary dependencies
+- responsive images
+- clean component structure
+- no bloated libraries unless necessary
 
 ==================================================
 FINAL DESIGN STANDARD

@@ -77,11 +77,32 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "DX" },
-      { name: "description", content: "Digital dollars, made simple for The Gambia." },
+      { title: "DX — Digital Dollars, Made Simple" },
+      {
+        name: "description",
+        content: "Buy, sell, send and manage USDT through DX, built for The Gambia.",
+      },
       { name: "author", content: "DX" },
+      { name: "theme-color", content: "#0B0F0D" },
+      { property: "og:site_name", content: "DX" },
       { property: "og:type", content: "website" },
+      { property: "og:title", content: "DX — Digital Dollars, Made Simple" },
+      {
+        property: "og:description",
+        content: "Buy, sell, send and manage USDT through DX, built for The Gambia.",
+      },
+      { property: "og:image", content: "/og-preview.jpg" },
+      { property: "og:image:width", content: "1200" },
+      { property: "og:image:height", content: "630" },
+      { property: "og:image:alt", content: "DX — Digital Dollars, Made Simple" },
+      { property: "og:locale", content: "en_GM" },
       { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:title", content: "DX — Digital Dollars, Made Simple" },
+      {
+        name: "twitter:description",
+        content: "Buy, sell, send and manage USDT through DX, built for The Gambia.",
+      },
+      { name: "twitter:image", content: "/og-preview.jpg" },
     ],
     links: [
       {
@@ -94,6 +115,32 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       },
       { rel: "icon", type: "image/png", href: "/favicon.png" },
       { rel: "apple-touch-icon", href: "/apple-touch-icon.png" },
+    ],
+    scripts: [
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@graph": [
+            {
+              "@type": "Organization",
+              name: "DX",
+              description:
+                "Your Gateway to Global Finance. Buy, sell, send and manage USDT through DX, built for The Gambia.",
+              address: {
+                "@type": "PostalAddress",
+                addressCountry: "GM",
+              },
+            },
+            {
+              "@type": "FinancialProduct",
+              name: "DX Digital Dollar Wallet & Virtual Card",
+              description:
+                "Digital dollars (USDT) made simple for The Gambia with local rails including Wave, Afrimoney, QMoney, and local banks.",
+            },
+          ],
+        }),
+      },
     ],
   }),
   shellComponent: RootShell,

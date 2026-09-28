@@ -1,0 +1,77 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <filter id="badge-shadow" x="-5%" y="-5%" width="110%" height="110%">
+      <feDropShadow dx="0" dy="4" stdDeviation="6" flood-color="#000000" flood-opacity="0.08"/>
+    </filter>
+  </defs>
+
+  <!-- White squircle container with ~22% corner radius (matching IMG_2274.JPG.jpeg) -->
+  
+
+  <!-- Banknotes (Bills) emerging from top opening -->
+  <g id="bills">
+    <!-- Back Bill -->
+    <path d="M 192 178 C 224 122, 296 116, 344 146 C 349 149, 350 154, 347 160 C 341 170, 334 178, 320 178 Z" fill="#00901E"/>
+    <path d="M 196 176 C 226 126, 292 120, 340 148" stroke="#FFFFFF" stroke-width="5" stroke-linecap="round" fill="none"/>
+
+    <!-- Front Bill -->
+    <path d="M 184 178 C 230 138, 300 132, 346 160 C 351 163, 352 167, 349 172 C 345 177, 338 178, 318 178 Z" fill="#00A824"/>
+    <path d="M 188 176 C 232 140, 296 136, 342 162" stroke="#FFFFFF" stroke-width="5" stroke-linecap="round" fill="none"/>
+  </g>
+
+  <!-- Wallet Body -->
+  <g id="wallet">
+    <!-- Main rounded rectangle body: x=136, y=178, w=212, h=178, rx=32 -->
+    <rect x="136" y="178" width="212" height="178" rx="32" fill="#00A824"/>
+
+    <!-- Wallet Clasp Tab extending to the right -->
+    <!-- Tab body: x=316 to 388, y=236 to 298, radius 31 -->
+    <path d="
+      M 316 236
+      L 357 236
+      C 374 236 388 250 388 267
+      C 388 284 374 298 357 298
+      L 316 298
+      Z
+    " fill="#00A824"/>
+
+    <!-- White outline contour separating the tab clasp from the wallet -->
+    <path d="
+      M 346 236
+      L 357 236
+      C 374 236 388 250 388 267
+      C 388 284 374 298 357 298
+      L 346 298
+    " stroke="#FFFFFF" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+
+    <!-- White snap button circle in the tab -->
+    <circle cx="361" cy="267" r="9" fill="#FFFFFF"/>
+
+    <!-- DX Stylized Cutout Monogram -->
+    <!-- Top-left horizontal runner into diagonal down-right of X -->
+    <path d="
+      M 154 224
+      L 202 224
+      C 215 224 226 230 234 240
+      L 278 304
+      L 256 304
+      L 216 248
+      C 210 242 204 239 196 239
+      L 154 239
+      Z
+    " fill="#FFFFFF"/>
+
+    <!-- Bottom-left horizontal runner into diagonal up-right of X -->
+    <path d="
+      M 154 295
+      L 196 295
+      C 204 295 210 292 216 286
+      L 256 230
+      L 278 230
+      L 234 294
+      C 226 304 215 310 202 310
+      L 154 310
+      Z
+    " fill="#FFFFFF"/>
+  </g>
+</svg>
