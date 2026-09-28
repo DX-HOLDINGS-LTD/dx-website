@@ -4,7 +4,7 @@ import {
   ArrowDownLeft, ArrowRight, ArrowUpRight, BadgeCheck, Banknote, Check,
   ChevronRight, CircleDollarSign, Clock3, CreditCard, Download, ExternalLink,
   Facebook, Globe2, History, Instagram, Landmark, Linkedin, LockKeyhole,
-  Menu, Minus, Phone, QrCode, Send, ShieldCheck, Smartphone, Sparkles,
+  Menu, Minus, Phone, Play, QrCode, Send, ShieldCheck, Smartphone, Sparkles,
   WalletCards, X, Youtube, Zap,
   type LucideIcon,
 } from "lucide-react";
@@ -152,6 +152,19 @@ function DXCard() {
   </div></section>;
 }
 
+function VideoStory() {
+  return <section id="video" className="bg-background py-24 sm:py-32"><div className="mx-auto max-w-7xl px-5 sm:px-8 lg:px-10">
+    <div className="mx-auto max-w-3xl text-center"><p className="text-xs font-extrabold text-primary-hover">SEE DX IN ACTION</p><h2 className="mt-4 text-4xl font-extrabold leading-tight sm:text-5xl">Digital dollars, made clear.</h2><p className="mx-auto mt-5 max-w-2xl text-lg leading-8 text-muted-foreground">A closer look at how DX is being built to make buying, sending and spending digital dollars feel simple.</p></div>
+    <div className="relative mt-12 aspect-video w-full overflow-hidden rounded-xl border border-border bg-dark shadow-2xl">
+      <div className="absolute inset-0 grid place-items-center p-6 text-center">
+        <div><img src={dxLogo.url} alt="" className="mx-auto size-20 object-contain sm:size-24"/><p className="mt-5 text-sm font-bold text-dark-foreground">The DX Story</p><p className="mt-2 text-xs text-dark-foreground/50">Video coming soon</p></div>
+      </div>
+      <Button type="button" variant="hero" size="icon" className="absolute left-1/2 top-1/2 size-16 -translate-x-1/2 -translate-y-1/2 rounded-full shadow-2xl sm:size-20" disabled aria-label="DX story video coming soon"><Play className="size-6 fill-current sm:size-7"/></Button>
+      <div className="absolute inset-x-0 bottom-0 h-1 bg-dark-border"><div className="h-full w-0 bg-primary"/></div>
+    </div>
+  </div></section>;
+}
+
 function ComingSoon() { const items: ReadonlyArray<readonly [LucideIcon,string,string,string,string]>=[[Smartphone,"Bills & Airtime","Pay for Everyday Essentials.","Future support for electricity, airtime, utilities and other everyday payments.","Coming Soon"],[CircleDollarSign,"More Financial Services","More Ways to Use Your Money.","DX plans to continue expanding its financial services.","More Coming Soon"]]; return <section id="coming-soon" className="bg-surface py-24 sm:py-32"><div className="mx-auto max-w-7xl px-5 sm:px-8 lg:px-10"><SectionHeading eyebrow="THE JOURNEY AHEAD" title="And We're Just Getting Started." text="DX is the beginning of a larger digital-finance journey."/><div className="mt-14 grid gap-5 lg:grid-cols-2">{items.map(([Icon,title,sub,text,badge])=><article key={title} className="border border-border bg-background p-7"><div className="flex items-start justify-between gap-3"><Icon className="size-8 text-primary-hover"/><span className="rounded-full border border-primary/30 bg-brand-soft px-3 py-1 text-[10px] font-bold text-primary-hover">{badge}</span></div><h3 className="mt-10 text-2xl font-bold">{title}</h3><p className="mt-2 font-semibold text-primary-hover">{sub}</p><p className="mt-4 leading-7 text-muted-foreground">{text}</p></article>)}</div></div></section>; }
 
 const useCases=["Forex","Freelancing","Online Business","International Payments","Digital Assets","Personal Use","Other"];
@@ -173,4 +186,4 @@ function JourneyContact(){const [sent,setSent]=useState(false); function submit(
 
 function Footer(){return <footer className="bg-dark py-14 text-dark-foreground"><div className="mx-auto max-w-7xl px-5 sm:px-8 lg:px-10"><div className="grid gap-10 border-b border-dark-border pb-12 lg:grid-cols-[1fr_auto]"><div><Brand inverse/><p className="mt-4 text-sm text-dark-foreground/55">Your Gateway to Global Finance.</p></div><div className="grid grid-cols-2 gap-x-10 gap-y-4 text-sm sm:grid-cols-3">{[...nav,["Contact","contact"] as const].map(([label,id])=><a key={id} href={`#${id}`} className="text-dark-foreground/65 hover:text-primary">{label}</a>)}<a href="#top" className="text-dark-foreground/65 hover:text-primary">Privacy Policy</a><a href="#top" className="text-dark-foreground/65 hover:text-primary">Terms of Service</a></div></div><div className="flex flex-col gap-4 pt-7 text-xs text-dark-foreground/45 sm:flex-row sm:items-center sm:justify-between"><p>© 2026 DX. All rights reserved.</p><p>Built in The Gambia. Designed for the world.</p></div></div></footer>}
 
-function HomePage(){return <main><SiteHeader/><Hero/><IntroAndFeatures/><HowItWorks/><BuySell/><SendShowcase/><ExternalAndWhy/><DXCard/><ComingSoon/><Waitlist/><Learn/><FAQ/><JourneyContact/><Footer/></main>}
+function HomePage(){return <main><SiteHeader/><Hero/><IntroAndFeatures/><HowItWorks/><BuySell/><SendShowcase/><ExternalAndWhy/><DXCard/><VideoStory/><ComingSoon/><Waitlist/><Learn/><FAQ/><JourneyContact/><Footer/></main>}
