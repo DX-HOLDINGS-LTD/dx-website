@@ -14,6 +14,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import dxLogo from "@/assets/dx-logo-icon-transparent.png.asset.json";
 
 export const Route = createFileRoute("/")({
   head: () => ({ meta: [
@@ -34,7 +35,7 @@ const nav = [
 
 function Brand({ inverse = false }: { inverse?: boolean }) {
   return <a href="#top" className={`flex items-center gap-2.5 font-extrabold text-xl ${inverse ? "text-dark-foreground" : "text-foreground"}`} aria-label="DX home">
-    <span className="grid size-9 place-items-center rounded-md bg-primary text-sm text-primary-foreground">DX</span>
+    <img src={dxLogo.url} alt="" className="size-11 object-contain" />
     <span>DX</span>
   </a>;
 }
@@ -65,7 +66,7 @@ function PreviewPill() { return <span className="inline-flex items-center gap-1.
 function WalletPhone() {
   return <div className="phone-float relative mx-auto w-full max-w-[360px] rounded-[2.5rem] border-[7px] border-foreground bg-background p-2.5 shadow-2xl">
     <div className="overflow-hidden rounded-[1.8rem] bg-background p-5 text-foreground">
-      <div className="mb-10 flex items-center justify-between"><span className="grid size-9 place-items-center rounded-md bg-primary text-xs font-extrabold text-primary-foreground">DX</span><span className="rounded-full bg-brand-soft px-3 py-1 text-[10px] font-bold text-primary-hover">SIMPLE &amp; SECURE</span></div>
+      <div className="mb-10 flex items-center justify-between"><img src={dxLogo.url} alt="DX" className="size-11 object-contain"/><span className="rounded-full bg-brand-soft px-3 py-1 text-[10px] font-bold text-primary-hover">SIMPLE &amp; SECURE</span></div>
       <div className="flex items-center justify-center gap-3">
         <div className="rounded-xl border border-border bg-surface p-4 text-center"><span className="mx-auto grid size-9 place-items-center rounded-lg bg-primary text-sm font-bold text-primary-foreground">D</span><p className="mt-2 text-[10px] text-muted-foreground">Dalasi</p><p className="font-extrabold">750</p></div>
         <ArrowRight className="size-5 text-primary-hover" />
@@ -143,7 +144,7 @@ function DXCard() {
   return <section id="dx-card" className="bg-dark py-24 text-dark-foreground sm:py-32"><div className="mx-auto max-w-7xl px-5 sm:px-8 lg:px-10">
     <div className="grid items-center gap-14 lg:grid-cols-[.9fr_1.1fr]">
       <div><p className="text-xs font-extrabold text-primary">DX CARD</p><h2 className="mt-4 text-4xl font-extrabold leading-tight sm:text-6xl">Your digital dollars, ready to spend.</h2><p className="mt-6 max-w-xl text-lg leading-8 text-dark-foreground/65">Create your card through DX, fund it from your USDT balance, and use it for supported online and everyday payments.</p><span className="mt-7 inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/10 px-4 py-2 text-xs font-bold text-primary"><Sparkles className="size-4"/> Product preview</span></div>
-      <div className="relative mx-auto w-full max-w-lg py-10"><div className="relative z-10 mx-auto aspect-[1.58/1] max-w-md rounded-2xl border border-primary/35 bg-primary p-7 text-primary-foreground shadow-2xl sm:p-9"><div className="flex items-start justify-between"><span className="text-2xl font-extrabold">DX</span><CreditCard className="size-9"/></div><div className="mt-16 text-xl font-semibold tracking-[.18em]">••••&nbsp; ••••&nbsp; ••••&nbsp; 2048</div><div className="mt-8 flex items-end justify-between"><div><p className="text-[10px] opacity-60">CARD HOLDER</p><p className="mt-1 text-sm font-bold">YOUR NAME</p></div><p className="text-lg font-extrabold">VIRTUAL</p></div></div></div>
+      <div className="relative mx-auto w-full max-w-lg py-10"><div className="relative z-10 mx-auto aspect-[1.58/1] max-w-md rounded-2xl border border-primary/35 bg-primary p-7 text-primary-foreground shadow-2xl sm:p-9"><div className="flex items-start justify-between"><img src={dxLogo.url} alt="DX" className="size-14 object-contain"/><CreditCard className="size-9"/></div><div className="mt-12 text-xl font-semibold tracking-[.18em]">••••&nbsp; ••••&nbsp; ••••&nbsp; 2048</div><div className="mt-8 flex items-end justify-between"><div><p className="text-[10px] opacity-60">CARD HOLDER</p><p className="mt-1 text-sm font-bold">YOUR NAME</p></div><p className="text-lg font-extrabold">VIRTUAL</p></div></div></div>
     </div>
     <div className="mt-20"><h3 className="text-2xl font-bold">How to create your DX Card</h3><ol className="mt-8 grid gap-px overflow-hidden rounded-lg border border-dark-border bg-dark-border sm:grid-cols-2 lg:grid-cols-4">{creationSteps.map(([number,title,text])=><li key={number} className="bg-dark-surface p-6"><span className="text-sm font-extrabold text-primary">{number}</span><h4 className="mt-7 text-lg font-bold">{title}</h4><p className="mt-3 text-sm leading-6 text-dark-foreground/60">{text}</p></li>)}</ol></div>
     <div className="mt-16"><h3 className="text-2xl font-bold">What you can use it for</h3><div className="mt-8 grid gap-8 sm:grid-cols-2 lg:grid-cols-4">{cardUses.map(([Icon,title,text])=><div key={title}><span className="grid size-11 place-items-center rounded-md bg-primary/10 text-primary"><Icon className="size-5"/></span><h4 className="mt-5 font-bold">{title}</h4><p className="mt-2 text-sm leading-6 text-dark-foreground/60">{text}</p></div>)}</div></div>
