@@ -696,7 +696,7 @@ function DXCard() {
               <div className="relative flex h-full flex-col justify-between">
                 <div className="flex items-start justify-between">
                   <img
-                    src="/dx-logo-app-icon.svg"
+                    src="/dx-logo.png"
                     alt="DX"
                     className="size-12 rounded-xl object-contain shadow-md"
                   />
