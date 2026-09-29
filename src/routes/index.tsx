@@ -379,17 +379,22 @@ function HowItWorks() {
     ["Buy or Deposit", "Get USDT into your DX."],
     ["Use Your USDT", "Send it to another DX user or an external wallet."],
     ["Sell or Withdraw", "Convert your USDT to Dalasi or send it elsewhere."],
+    [
+      "Spend With Your Virtual Card",
+      "Fund the DX virtual card from your balance and spend anywhere a Visa or supported bank card is accepted.",
+    ],
   ];
   return (
     <section id="how-it-works" className="bg-background py-24 sm:py-32">
       <div className="mx-auto max-w-7xl px-5 sm:px-8 lg:px-10">
         <SectionHeading
           eyebrow="HOW IT WORKS"
-          title="Four steps. That's it."
-          text="A straightforward path from signing up to using digital dollars."
+          title="Five steps. That's it."
+          text="A straightforward path from signing up to spending digital dollars."
         />
-        <ol className="relative mt-14 grid gap-8 lg:grid-cols-4 lg:gap-0">
-          <div className="absolute left-[12%] right-[12%] top-7 hidden h-px bg-border lg:block" />
+        <ol className="relative mt-14 grid gap-8 lg:grid-cols-5 lg:gap-0">
+          <div className="absolute left-[10%] right-[10%] top-7 hidden h-px bg-border lg:block" />
+
           {steps.map(([title, text], i) => (
             <li key={title} className="relative grid grid-cols-[auto_1fr] gap-5 lg:block lg:pr-9">
               <span className="relative z-10 grid size-14 place-items-center rounded-full border border-primary bg-background font-bold text-primary-hover">
@@ -508,8 +513,22 @@ function SendShowcase() {
           <div className="mt-8 space-y-5">
             <div>
               <p className="text-xs font-semibold text-muted-foreground">To</p>
-              <div className="mt-2 rounded-lg border border-input p-4 font-bold">DX102847</div>
+              <div className="mt-2 rounded-lg border border-input p-4">
+                <div className="flex items-center gap-3">
+                  <span className="grid size-10 shrink-0 place-items-center rounded-full bg-brand-soft text-sm font-extrabold text-primary-hover">
+                    FC
+                  </span>
+                  <div className="min-w-0">
+                    <p className="flex items-center gap-1.5 text-sm font-bold">
+                      Fatou Camara
+                      <BadgeCheck className="size-4 shrink-0 text-primary-hover" />
+                    </p>
+                    <p className="mt-0.5 text-xs text-muted-foreground">DX102847</p>
+                  </div>
+                </div>
+              </div>
             </div>
+
             <div>
               <p className="text-xs font-semibold text-muted-foreground">Amount</p>
               <div className="mt-2 flex items-center justify-between rounded-lg border border-primary bg-brand-soft p-4">
@@ -615,28 +634,44 @@ function DXCard() {
               <Sparkles className="size-4" /> Product preview
             </span>
           </div>
-          <div className="relative mx-auto w-full max-w-lg py-10">
-            <div className="relative z-10 mx-auto aspect-[1.58/1] max-w-md rounded-2xl border border-primary/35 bg-primary p-7 text-primary-foreground shadow-2xl sm:p-9">
-              <div className="flex items-start justify-between">
-                <img
-                  src="/dx-logo-app-icon.svg"
-                  alt="DX"
-                  className="size-14 rounded-2xl object-contain shadow-md"
-                />
-                <CreditCard className="size-9" />
-              </div>
-              <div className="mt-12 text-xl font-semibold tracking-[.18em]">
-                ••••&nbsp; ••••&nbsp; ••••&nbsp; 2048
-              </div>
-              <div className="mt-8 flex items-end justify-between">
-                <div>
-                  <p className="text-[10px] opacity-60">CARD HOLDER</p>
-                  <p className="mt-1 text-sm font-bold">YOUR NAME</p>
+          <div className="relative mx-auto w-full max-w-xl py-10">
+            <div className="relative z-10 mx-auto aspect-[1.75/1] w-full max-w-[520px] overflow-hidden rounded-2xl border border-primary/25 bg-gradient-to-br from-[oklch(0.62_0.16_162)] via-primary to-[oklch(0.48_0.13_163)] p-6 text-primary-foreground shadow-2xl sm:p-8">
+              <div
+                aria-hidden
+                className="pointer-events-none absolute -right-16 -top-24 size-72 rounded-full bg-primary-foreground/10 blur-2xl"
+              />
+              <div className="relative flex h-full flex-col justify-between">
+                <div className="flex items-start justify-between">
+                  <img
+                    src="/dx-logo-app-icon.svg"
+                    alt="DX"
+                    className="size-12 rounded-xl object-contain shadow-md"
+                  />
+                  <Wifi className="size-6 rotate-90 opacity-80" />
                 </div>
-                <p className="text-lg font-extrabold">VIRTUAL</p>
+                <div>
+                  <p className="text-[10px] font-bold uppercase tracking-[.2em] opacity-60">
+                    Virtual card
+                  </p>
+                  <p className="mt-2 text-[clamp(1.1rem,3.4vw,1.6rem)] font-extrabold tracking-[.14em]">
+                    5298 •••• •••• 6214
+                  </p>
+                  <div className="mt-6 flex items-end justify-between gap-6">
+                    <div>
+                      <p className="text-[9px] uppercase tracking-[.17em] opacity-55">Cardholder</p>
+                      <p className="mt-1 text-sm font-semibold">YOUR NAME</p>
+                    </div>
+                    <div>
+                      <p className="text-[9px] uppercase tracking-[.17em] opacity-55">Expires</p>
+                      <p className="mt-1 text-sm font-semibold">09/30</p>
+                    </div>
+                    <p className="text-sm font-extrabold uppercase tracking-[.12em]">Virtual</p>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
+
         </div>
         <div className="mt-20">
           <h3 className="text-2xl font-bold">How to create your DX Card</h3>
@@ -1261,10 +1296,11 @@ function HomePage() {
       <IntroAndFeatures />
       <HowItWorks />
       <BuySell />
+      <DXCard />
       <SendShowcase />
       <ExternalAndWhy />
-      <DXCard />
       <VideoStorySection />
+
       <ComingSoon />
       <Waitlist />
       <Learn />
