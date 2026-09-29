@@ -33,7 +33,9 @@ import {
   WalletCards,
   X,
   Youtube,
+  Wifi,
   Zap,
+
   type LucideIcon,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -175,62 +177,111 @@ function PreviewPill() {
 }
 
 function WalletPhone() {
+  const actions: ReadonlyArray<readonly [LucideIcon, string]> = [
+    [Download, "Buy"],
+    [ArrowUpRight, "Sell"],
+    [Send, "Send"],
+    [CreditCard, "Card"],
+  ];
+  const activity: ReadonlyArray<readonly [string, string, string, boolean]> = [
+    ["Bought USDT", "Wave · today", "+125.00", true],
+    ["Sold USDT", "Afrimoney · yesterday", "-50.00", false],
+    ["Received from Fatou", "DX transfer · 2 days ago", "+300.00", true],
+  ];
   return (
     <div className="phone-float relative mx-auto w-full max-w-[360px] rounded-[2.5rem] border-[7px] border-foreground bg-background p-2.5 shadow-2xl">
-      <div className="overflow-hidden rounded-[1.8rem] bg-background p-5 text-foreground">
-        <div className="mb-10 flex items-center justify-between">
-          <img src={dxLogo.url} alt="DX" className="size-11 rounded-xl object-contain shadow-sm" />
-          <span className="rounded-full bg-brand-soft px-3 py-1 text-[10px] font-bold text-primary-hover">
+      <div className="overflow-hidden rounded-[1.8rem] bg-surface pb-5 text-foreground">
+        <div className="flex items-center justify-between px-5 pb-4 pt-5">
+          <div className="flex items-center gap-2.5">
+            <img src={dxLogo.url} alt="DX" className="size-9 rounded-xl object-contain shadow-sm" />
+            <div>
+              <p className="text-[10px] text-muted-foreground">Good morning,</p>
+              <p className="text-sm font-bold">Alagie</p>
+            </div>
+          </div>
+          <span className="rounded-full bg-brand-soft px-2.5 py-1 text-[9px] font-bold text-primary-hover">
             SIMPLE &amp; SECURE
           </span>
         </div>
-        <div className="flex items-center justify-center gap-3">
-          <div className="rounded-xl border border-border bg-surface p-4 text-center">
-            <span className="mx-auto grid size-9 place-items-center rounded-lg bg-primary text-sm font-bold text-primary-foreground">
-              D
+        <div className="mx-4 rounded-2xl bg-gradient-to-br from-[oklch(0.62_0.16_162)] via-primary to-[oklch(0.48_0.13_163)] px-5 pb-5 pt-4 text-primary-foreground shadow-lg">
+          <p className="text-[9px] font-bold uppercase tracking-[.16em] opacity-70">
+            Total Balance
+          </p>
+          <p className="mt-1.5 flex items-end gap-1.5">
+            <span className="text-[2.1rem] font-extrabold leading-none tracking-tight">
+              $1,240.50
             </span>
-            <p className="mt-2 text-[10px] text-muted-foreground">Dalasi</p>
-            <p className="font-extrabold">750</p>
-          </div>
-          <ArrowRight className="size-5 text-primary-hover" />
-          <div className="rounded-xl bg-dark p-5 text-center text-dark-foreground shadow-xl">
-            <p className="text-[10px] font-bold text-primary">DX</p>
-            <p className="mt-2 text-2xl font-extrabold">$10</p>
-            <p className="text-[10px] text-dark-foreground/60">USDT balance</p>
-          </div>
-          <ArrowRight className="size-5 text-primary-hover" />
-          <div className="rounded-xl border border-border bg-surface p-4 text-center">
-            <span className="mx-auto grid size-9 place-items-center rounded-lg bg-brand-soft text-sm font-bold text-primary-hover">
-              $
-            </span>
-            <p className="mt-2 text-[10px] text-muted-foreground">USDT</p>
-            <p className="font-extrabold">10.00</p>
+            <span className="pb-0.5 text-xs font-medium opacity-70">USDT</span>
+          </p>
+          <p className="mt-1.5 text-[11px] opacity-70">≈ D 89,316 GMD</p>
+          <div className="mt-4 flex gap-2">
+            {[
+              ["Buy", "D 148.50"],
+              ["Sell", "D 147.00"],
+            ].map(([label, rate]) => (
+              <span
+                key={label}
+                className="rounded-lg bg-primary-foreground/15 px-2.5 py-1 text-[10px] font-semibold"
+              >
+                {label} <span className="font-extrabold">{rate}</span>
+              </span>
+            ))}
           </div>
         </div>
-        <div className="mt-7 flex flex-wrap justify-center gap-2">
+        <div className="mx-4 mt-4 grid grid-cols-4 gap-1 rounded-2xl bg-background px-2 py-3.5 shadow-sm">
+          {actions.map(([Icon, label]) => (
+            <div key={label} className="flex flex-col items-center gap-1.5">
+              <span className="grid size-9 place-items-center rounded-xl bg-brand-soft text-primary-hover">
+                <Icon className="size-4" />
+              </span>
+              <span className="text-[10px] font-semibold">{label}</span>
+            </div>
+          ))}
+        </div>
+        <div className="mx-4 mt-4 rounded-2xl bg-background px-4 py-1 shadow-sm">
+          {activity.map(([title, sub, amount, positive], i) => (
+            <div
+              key={title}
+              className={`flex items-center justify-between gap-3 py-3 ${i < activity.length - 1 ? "border-b border-border" : ""}`}
+            >
+              <div className="flex items-center gap-2.5">
+                <span
+                  className={`grid size-7 place-items-center rounded-full ${positive ? "bg-brand-soft text-primary-hover" : "bg-surface text-muted-foreground"}`}
+                >
+                  {positive ? (
+                    <ArrowDownLeft className="size-3.5" />
+                  ) : (
+                    <ArrowUpRight className="size-3.5" />
+                  )}
+                </span>
+                <div>
+                  <p className="text-[11px] font-bold">{title}</p>
+                  <p className="text-[9px] text-muted-foreground">{sub}</p>
+                </div>
+              </div>
+              <span
+                className={`text-[11px] font-extrabold ${positive ? "text-primary-hover" : "text-muted-foreground"}`}
+              >
+                {amount}
+              </span>
+            </div>
+          ))}
+        </div>
+        <div className="mt-4 flex flex-wrap justify-center gap-1.5 px-4">
           {["Wave", "Afrimoney", "QMoney", "Bank"].map((method) => (
             <span
               key={method}
-              className="rounded-full border border-border bg-surface px-2.5 py-1 text-[10px] font-bold"
+              className="rounded-full border border-border bg-background px-2.5 py-1 text-[9px] font-bold"
             >
               {method}
             </span>
           ))}
         </div>
-        <div className="mt-7 text-center">
-          <p className="text-2xl font-extrabold leading-tight">
-            Buy Digital
-            <br />
-            Dollars
-          </p>
-          <p className="mx-auto mt-3 max-w-[270px] text-xs leading-5 text-muted-foreground">
-            Purchase USDT quickly and securely with a simple, trusted experience.
-          </p>
-        </div>
       </div>
     </div>
   );
 }
+
 
 function Hero() {
   return (
@@ -243,15 +294,17 @@ function Hero() {
           <p className="mb-6 flex items-center gap-2 text-sm font-semibold text-primary-hover">
             <ShieldCheck className="size-4" /> Simple &amp; Secure
           </p>
-          <h1 className="text-[clamp(3.2rem,8vw,6.8rem)] font-extrabold leading-[.96] tracking-[0]">
-            Buy Digital
+          <h1 className="text-[clamp(2.9rem,7.2vw,6rem)] font-extrabold leading-[.98] tracking-[0]">
+            Buy and sell
             <br />
-            <span className="text-primary-hover">Dollars.</span>
+            <span className="text-primary-hover">digital dollars.</span>
           </h1>
           <p className="mt-7 max-w-xl text-lg leading-8 text-muted-foreground">
-            Purchase USDT quickly and securely using supported local payment methods. No complicated
-            platforms—just a simple, trusted way to access digital dollars.
+            Buy and sell USDT quickly and securely using supported local payment methods. No
+            complicated platforms—just a simple, trusted way to move between Dalasi and digital
+            dollars.
           </p>
+
           <div className="mt-9 flex flex-col gap-3 sm:flex-row">
             <Button asChild size="lg">
               <a href="#waitlist">
