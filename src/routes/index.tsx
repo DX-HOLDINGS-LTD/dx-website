@@ -35,7 +35,6 @@ import {
   Youtube,
   Wifi,
   Zap,
-
   type LucideIcon,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -281,7 +280,6 @@ function WalletPhone() {
     </div>
   );
 }
-
 
 function Hero() {
   return (
@@ -724,7 +722,6 @@ function DXCard() {
               </div>
             </div>
           </div>
-
         </div>
         <div className="mt-20">
           <h3 className="text-2xl font-bold">How to create your DX Card</h3>

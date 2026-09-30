@@ -1,5 +1,9 @@
 import { supabase } from "@/integrations/supabase/client";
-import { WaitlistSubmissionSchema, type WaitlistInput, type WaitlistResponse } from "./waitlist-schema";
+import {
+  WaitlistSubmissionSchema,
+  type WaitlistInput,
+  type WaitlistResponse,
+} from "./waitlist-schema";
 
 export async function saveWaitlistSubmission(data: WaitlistInput): Promise<WaitlistResponse> {
   const validation = WaitlistSubmissionSchema.safeParse(data);
@@ -35,7 +39,8 @@ export async function saveWaitlistSubmission(data: WaitlistInput): Promise<Waitl
   }
   return {
     success: true,
-    message: "You're officially on the DX waiting list. We'll keep you updated as we get closer to launch.",
+    message:
+      "You're officially on the DX waiting list. We'll keep you updated as we get closer to launch.",
     record,
   };
 }

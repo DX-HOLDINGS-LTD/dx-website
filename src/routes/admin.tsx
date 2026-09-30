@@ -12,16 +12,18 @@ export const Route = createFileRoute("/admin")({
   head: () => ({
     meta: [
       { title: "DX Admin — Waitlist" },
-      { name: "description", content: "Private DX owner portal for managing the waitlist." },
+      { name: "description", content: "Private DX admin portal for managing the waitlist." },
       { name: "robots", content: "noindex, nofollow" },
       { property: "og:title", content: "DX Admin — Waitlist" },
-      { property: "og:description", content: "Private DX owner portal." },
+      { property: "og:description", content: "Private DX admin portal." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
     ],
   }),
   component: AdminPage,
 });
+
+const AUTHORIZED_ADMIN_EMAILS = ["abdoulieojay@gmail.com", "jassehbai100@gmail.com"];
 
 type Row = {
   id: string;
@@ -54,18 +56,35 @@ function AdminPage() {
     supabase.rpc("claim_owner_admin").then(({ data }) => setIsAdmin(Boolean(data)));
   }, [session]);
 
-  if (!ready) return <Shell><p className="text-muted-foreground">Loading…</p></Shell>;
-  if (!session) return <Shell><AuthForm /></Shell>;
-  if (isAdmin === null) return <Shell><p className="text-muted-foreground">Checking access…</p></Shell>;
+  if (!ready)
+    return (
+      <Shell>
+        <p className="text-muted-foreground">Loading…</p>
+      </Shell>
+    );
+  if (!session)
+    return (
+      <Shell>
+        <AuthForm />
+      </Shell>
+    );
+  if (isAdmin === null)
+    return (
+      <Shell>
+        <p className="text-muted-foreground">Checking access…</p>
+      </Shell>
+    );
   if (!isAdmin)
     return (
       <Shell>
         <div className="max-w-md space-y-4">
           <h1 className="text-2xl font-bold">No access</h1>
           <p className="text-muted-foreground">
-            This account ({session.user.email}) is not the DX owner account.
+            This account ({session.user.email}) is not an authorized administrator account.
           </p>
-          <Button variant="outline" onClick={() => supabase.auth.signOut()}>Sign out</Button>
+          <Button variant="outline" onClick={() => supabase.auth.signOut()}>
+            Sign out
+          </Button>
         </div>
       </Shell>
     );
@@ -93,7 +112,7 @@ function AuthForm() {
   async function submit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const f = new FormData(e.currentTarget);
-    const email = String(f.get("email")).trim();
+    const email = String(f.get("email")).trim().toLowerCase();
     const password = String(f.get("password"));
     setBusy(true);
     setMsg("");
@@ -112,17 +131,33 @@ function AuthForm() {
   }
 
   return (
-    <form onSubmit={submit} className="max-w-sm space-y-4 rounded-lg border border-border bg-background p-6">
-      <h1 className="text-2xl font-bold">{mode === "in" ? "Owner sign in" : "Create owner account"}</h1>
+    <form
+      onSubmit={submit}
+      className="max-w-sm space-y-4 rounded-lg border border-border bg-background p-6"
+    >
+      <h1 className="text-2xl font-bold">
+        {mode === "in" ? "Admin sign in" : "Create admin account"}
+      </h1>
       <div className="space-y-2">
         <Label htmlFor="email">Email</Label>
         <Input id="email" name="email" type="email" required autoComplete="email" />
       </div>
       <div className="space-y-2">
         <Label htmlFor="password">Password</Label>
-        <Input id="password" name="password" type="password" required minLength={8} autoComplete="current-password" />
+        <Input
+          id="password"
+          name="password"
+          type="password"
+          required
+          minLength={8}
+          autoComplete="current-password"
+        />
       </div>
-      {msg && <p className="text-sm text-muted-foreground" role="status">{msg}</p>}
+      {msg && (
+        <p className="text-sm text-muted-foreground" role="status">
+          {msg}
+        </p>
+      )}
       <Button type="submit" className="w-full" disabled={busy}>
         {busy ? "Please wait…" : mode === "in" ? "Sign in" : "Create account"}
       </Button>
@@ -131,7 +166,7 @@ function AuthForm() {
         className="text-sm text-muted-foreground underline"
         onClick={() => setMode(mode === "in" ? "up" : "in")}
       >
-        {mode === "in" ? "First time? Create the owner account" : "Already have an account? Sign in"}
+        {mode === "in" ? "First time? Create an admin account" : "Already have an account? Sign in"}
       </button>
     </form>
   );
@@ -144,21 +179,33 @@ function csvEscape(v: unknown) {
 
 function parseCsv(text: string): string[][] {
   const rows: string[][] = [];
-  let row: string[] = [], cell = "", q = false;
+  let row: string[] = [],
+    cell = "",
+    q = false;
   for (let i = 0; i < text.length; i++) {
     const c = text[i];
     if (q) {
-      if (c === '"' && text[i + 1] === '"') { cell += '"'; i++; }
-      else if (c === '"') q = false;
+      if (c === '"' && text[i + 1] === '"') {
+        cell += '"';
+        i++;
+      } else if (c === '"') q = false;
       else cell += c;
     } else if (c === '"') q = true;
-    else if (c === ",") { row.push(cell); cell = ""; }
-    else if (c === "\n" || c === "\r") {
+    else if (c === ",") {
+      row.push(cell);
+      cell = "";
+    } else if (c === "\n" || c === "\r") {
       if (c === "\r" && text[i + 1] === "\n") i++;
-      row.push(cell); rows.push(row); row = []; cell = "";
+      row.push(cell);
+      rows.push(row);
+      row = [];
+      cell = "";
     } else cell += c;
   }
-  if (cell || row.length) { row.push(cell); rows.push(row); }
+  if (cell || row.length) {
+    row.push(cell);
+    rows.push(row);
+  }
   return rows.filter((r) => r.some((x) => x.trim()));
 }
 
@@ -170,24 +217,58 @@ function Dashboard({ email }: { email: string }) {
 
   async function load() {
     setLoading(true);
-    const { data } = await supabase.from("waitlist").select("*").order("created_at", { ascending: false }).limit(5000);
+    const { data } = await supabase
+      .from("waitlist")
+      .select("*")
+      .order("created_at", { ascending: false })
+      .limit(5000);
     setRows((data as Row[]) ?? []);
     setLoading(false);
   }
-  useEffect(() => { load(); }, []);
+  useEffect(() => {
+    load();
+  }, []);
 
   const filtered = useMemo(() => {
     const q = query.toLowerCase();
-    return q ? rows.filter((r) => [r.full_name, r.email, r.phone, r.use_case, r.region].some((x) => x?.toLowerCase().includes(q))) : rows;
+    return q
+      ? rows.filter((r) =>
+          [r.full_name, r.email, r.phone, r.use_case, r.region].some((x) =>
+            x?.toLowerCase().includes(q),
+          ),
+        )
+      : rows;
   }, [rows, query]);
 
-  const today = rows.filter((r) => new Date(r.created_at).toDateString() === new Date().toDateString()).length;
+  const today = rows.filter(
+    (r) => new Date(r.created_at).toDateString() === new Date().toDateString(),
+  ).length;
   const website = rows.filter((r) => r.source === "website").length;
 
   function exportCsv() {
-    const head = ["Joined", "Full name", "Phone", "Email", "Region", "Main use", "Updates", "Source"];
+    const head = [
+      "Joined",
+      "Full name",
+      "Phone",
+      "Email",
+      "Region",
+      "Main use",
+      "Updates",
+      "Source",
+    ];
     const lines = filtered.map((r) =>
-      [new Date(r.created_at).toISOString(), r.full_name, r.phone, r.email, r.region, r.use_case, r.updates_opt_in ? "Yes" : "No", r.source].map(csvEscape).join(","),
+      [
+        new Date(r.created_at).toISOString(),
+        r.full_name,
+        r.phone,
+        r.email,
+        r.region,
+        r.use_case,
+        r.updates_opt_in ? "Yes" : "No",
+        r.source,
+      ]
+        .map(csvEscape)
+        .join(","),
     );
     const blob = new Blob([[head.join(","), ...lines].join("\n")], { type: "text/csv" });
     const a = document.createElement("a");
@@ -201,9 +282,14 @@ function Dashboard({ email }: { email: string }) {
     if (!header) return;
     const h = header.map((x) => x.toLowerCase());
     const col = (...keys: string[]) => h.findIndex((x) => keys.some((k) => x.includes(k)));
-    const iName = col("name"), iPhone = col("phone", "whatsapp", "number"), iEmail = col("email"),
-      iUse = col("use", "what would"), iRegion = col("region"), iTime = col("timestamp", "joined");
-    if (iName < 0 || iEmail < 0) return setNote("Couldn't find Name and Email columns in that file.");
+    const iName = col("name"),
+      iPhone = col("phone", "whatsapp", "number"),
+      iEmail = col("email"),
+      iUse = col("use", "what would"),
+      iRegion = col("region"),
+      iTime = col("timestamp", "joined");
+    if (iName < 0 || iEmail < 0)
+      return setNote("Couldn't find Name and Email columns in that file.");
     const existing = new Set(rows.map((r) => r.email.toLowerCase()));
     const add = body
       .map((r) => ({
@@ -213,10 +299,13 @@ function Dashboard({ email }: { email: string }) {
         use_case: (iUse >= 0 ? r[iUse]?.trim() : null) ?? null,
         region: (iRegion >= 0 ? r[iRegion]?.trim() : null) ?? null,
         source: "csv_import",
-        ...(iTime >= 0 && !isNaN(Date.parse(r[iTime]!.replace(" GMT", ""))) ? { created_at: new Date(r[iTime]!.replace(" GMT", "")).toISOString() } : {}),
+        ...(iTime >= 0 && !isNaN(Date.parse(r[iTime]!.replace(" GMT", "")))
+          ? { created_at: new Date(r[iTime]!.replace(" GMT", "")).toISOString() }
+          : {}),
       }))
       .filter((r) => r.email && !existing.has(r.email) && (existing.add(r.email), true));
-    if (!add.length) return setNote("No new contacts found — everyone in that file is already on the list.");
+    if (!add.length)
+      return setNote("No new contacts found — everyone in that file is already on the list.");
     const { error } = await supabase.from("waitlist").insert(add);
     setNote(error ? `Import failed: ${error.message}` : `Imported ${add.length} new contacts.`);
     load();
@@ -235,11 +324,17 @@ function Dashboard({ email }: { email: string }) {
           <h1 className="text-3xl font-bold">Waitlist</h1>
           <p className="text-sm text-muted-foreground">Signed in as {email}</p>
         </div>
-        <Button variant="outline" onClick={() => supabase.auth.signOut()}><LogOut /> Sign out</Button>
+        <Button variant="outline" onClick={() => supabase.auth.signOut()}>
+          <LogOut /> Sign out
+        </Button>
       </div>
 
       <div className="mb-6 grid gap-4 sm:grid-cols-3">
-        {[["Total signups", rows.length], ["From website", website], ["Joined today", today]].map(([l, v]) => (
+        {[
+          ["Total signups", rows.length],
+          ["From website", website],
+          ["Joined today", today],
+        ].map(([l, v]) => (
           <div key={l} className="rounded-lg border border-border bg-background p-5">
             <p className="text-sm text-muted-foreground">{l}</p>
             <p className="mt-1 text-3xl font-bold">{v}</p>
@@ -250,39 +345,87 @@ function Dashboard({ email }: { email: string }) {
       <div className="mb-4 flex flex-wrap items-center gap-3">
         <div className="relative min-w-[220px] flex-1">
           <Search className="absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
-          <Input className="pl-9" placeholder="Search name, email, phone…" value={query} onChange={(e) => setQuery(e.target.value)} aria-label="Search waitlist" />
+          <Input
+            className="pl-9"
+            placeholder="Search name, email, phone…"
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            aria-label="Search waitlist"
+          />
         </div>
-        <Button onClick={exportCsv}><Download /> Export CSV</Button>
+        <Button onClick={exportCsv}>
+          <Download /> Export CSV
+        </Button>
         <Button variant="outline" asChild>
           <label className="cursor-pointer">
             <Upload /> Import CSV
-            <input type="file" accept=".csv,text/csv" className="sr-only" onChange={(e) => { const f = e.target.files?.[0]; if (f) importCsv(f); e.target.value = ""; }} />
+            <input
+              type="file"
+              accept=".csv,text/csv"
+              className="sr-only"
+              onChange={(e) => {
+                const f = e.target.files?.[0];
+                if (f) importCsv(f);
+                e.target.value = "";
+              }}
+            />
           </label>
         </Button>
       </div>
-      {note && <p className="mb-4 text-sm" role="status">{note}</p>}
+      {note && (
+        <p className="mb-4 text-sm" role="status">
+          {note}
+        </p>
+      )}
 
       <div className="overflow-x-auto rounded-lg border border-border bg-background">
         <table className="w-full min-w-[800px] text-left text-sm">
           <thead className="border-b border-border bg-surface text-muted-foreground">
-            <tr>{["Joined", "Name", "Phone", "Email", "Main use", "Source", ""].map((h) => <th key={h} className="px-4 py-3 font-semibold">{h}</th>)}</tr>
+            <tr>
+              {["Joined", "Name", "Phone", "Email", "Main use", "Source", ""].map((h) => (
+                <th key={h} className="px-4 py-3 font-semibold">
+                  {h}
+                </th>
+              ))}
+            </tr>
           </thead>
           <tbody>
             {loading ? (
-              <tr><td colSpan={7} className="px-4 py-8 text-center text-muted-foreground">Loading…</td></tr>
+              <tr>
+                <td colSpan={7} className="px-4 py-8 text-center text-muted-foreground">
+                  Loading…
+                </td>
+              </tr>
             ) : filtered.length === 0 ? (
-              <tr><td colSpan={7} className="px-4 py-8 text-center text-muted-foreground"><Users className="mx-auto mb-2" />No signups found.</td></tr>
+              <tr>
+                <td colSpan={7} className="px-4 py-8 text-center text-muted-foreground">
+                  <Users className="mx-auto mb-2" />
+                  No signups found.
+                </td>
+              </tr>
             ) : (
               filtered.map((r) => (
                 <tr key={r.id} className="border-b border-border last:border-0">
-                  <td className="whitespace-nowrap px-4 py-3 text-muted-foreground">{new Date(r.created_at).toLocaleDateString()}</td>
+                  <td className="whitespace-nowrap px-4 py-3 text-muted-foreground">
+                    {new Date(r.created_at).toLocaleDateString()}
+                  </td>
                   <td className="px-4 py-3 font-medium">{r.full_name}</td>
                   <td className="whitespace-nowrap px-4 py-3">{r.phone}</td>
                   <td className="px-4 py-3">{r.email}</td>
-                  <td className="max-w-[240px] truncate px-4 py-3" title={r.use_case ?? ""}>{r.use_case || "—"}</td>
-                  <td className="px-4 py-3 text-muted-foreground">{r.source === "website" ? "Website" : "Google Form"}</td>
+                  <td className="max-w-[240px] truncate px-4 py-3" title={r.use_case ?? ""}>
+                    {r.use_case || "—"}
+                  </td>
+                  <td className="px-4 py-3 text-muted-foreground">
+                    {r.source === "website" ? "Website" : "Google Form"}
+                  </td>
                   <td className="px-4 py-3">
-                    <button onClick={() => remove(r.id)} aria-label={`Remove ${r.full_name}`} className="text-muted-foreground hover:text-destructive"><Trash2 className="size-4" /></button>
+                    <button
+                      onClick={() => remove(r.id)}
+                      aria-label={`Remove ${r.full_name}`}
+                      className="text-muted-foreground hover:text-destructive"
+                    >
+                      <Trash2 className="size-4" />
+                    </button>
                   </td>
                 </tr>
               ))
