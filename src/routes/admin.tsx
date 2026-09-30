@@ -210,8 +210,8 @@ function Dashboard({ email }: { email: string }) {
         full_name: r[iName]?.trim() || "Unknown",
         phone: (iPhone >= 0 ? r[iPhone]?.trim() : "") || "-",
         email: r[iEmail]?.trim().toLowerCase() ?? "",
-        use_case: iUse >= 0 ? r[iUse]?.trim() : null,
-        region: iRegion >= 0 ? r[iRegion]?.trim() : null,
+        use_case: (iUse >= 0 ? r[iUse]?.trim() : null) ?? null,
+        region: (iRegion >= 0 ? r[iRegion]?.trim() : null) ?? null,
         source: "csv_import",
         ...(iTime >= 0 && !isNaN(Date.parse(r[iTime]!.replace(" GMT", ""))) ? { created_at: new Date(r[iTime]!.replace(" GMT", "")).toISOString() } : {}),
       }))
