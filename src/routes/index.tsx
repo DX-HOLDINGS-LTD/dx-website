@@ -855,8 +855,7 @@ function Waitlist() {
     setDuplicateMessage("");
 
     try {
-      await new Promise((resolve) => setTimeout(resolve, 450));
-      const res = saveWaitlistSubmission({
+      const res = await saveWaitlistSubmission({
         fullName,
         phone,
         email,
