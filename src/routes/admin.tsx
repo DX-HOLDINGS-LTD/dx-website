@@ -1,14 +1,35 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useMemo, useState, type FormEvent } from "react";
 import type { Session } from "@supabase/supabase-js";
-import { Download, LogOut, Search, Trash2, Upload, Users } from "lucide-react";
-import { supabase } from "@/integrations/supabase/client";
+import { Download, KeyRound, LogOut, RefreshCw, Search, Trash2, Upload, Users } from "lucide-react";
+import {
+  getSupabaseConfig,
+  isSupabaseConfigured,
+  setSupabasePublishableKey,
+  supabase,
+} from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
 export const Route = createFileRoute("/admin")({
   ssr: false,
+  errorComponent: ({ error, reset }) => (
+    <Shell>
+      <div className="max-w-md space-y-4 rounded-xl border border-destructive/40 bg-card p-6 shadow-sm">
+        <h1 className="text-xl font-bold text-destructive">Admin Portal Error</h1>
+        <p className="text-sm text-muted-foreground">
+          {error instanceof Error ? error.message : String(error)}
+        </p>
+        <div className="flex gap-2">
+          <Button onClick={() => reset()}>Try again</Button>
+          <Button variant="outline" asChild>
+            <a href="/">Go Home</a>
+          </Button>
+        </div>
+      </div>
+    </Shell>
+  ),
   head: () => ({
     meta: [
       { title: "DX Admin — Waitlist" },
@@ -41,20 +62,74 @@ function AdminPage() {
   const [session, setSession] = useState<Session | null>(null);
   const [ready, setReady] = useState(false);
   const [isAdmin, setIsAdmin] = useState<boolean | null>(null);
+  const [isConfigured, setIsConfigured] = useState(() => isSupabaseConfigured());
 
   useEffect(() => {
-    const { data: sub } = supabase.auth.onAuthStateChange((_e, s) => setSession(s));
-    supabase.auth.getSession().then(({ data }) => {
-      setSession(data.session);
+    if (!isConfigured) {
       setReady(true);
-    });
-    return () => sub.subscription.unsubscribe();
-  }, []);
+      return;
+    }
+
+    let sub: { subscription: { unsubscribe: () => void } } | null = null;
+    try {
+      const res = supabase.auth.onAuthStateChange((_e, s) => {
+        setSession(s);
+      });
+      sub = res.data;
+
+      supabase.auth
+        .getSession()
+        .then(({ data }) => {
+          setSession(data.session);
+          setReady(true);
+        })
+        .catch((err) => {
+          console.error("Failed to get auth session", err);
+          setReady(true);
+        });
+    } catch (err) {
+      console.error("Auth initialization error", err);
+      setReady(true);
+    }
+
+    return () => {
+      sub?.subscription.unsubscribe();
+    };
+  }, [isConfigured]);
 
   useEffect(() => {
-    if (!session) return setIsAdmin(null);
-    supabase.rpc("claim_owner_admin").then(({ data }) => setIsAdmin(Boolean(data)));
+    if (!session) {
+      setIsAdmin(null);
+      return;
+    }
+
+    const email = session.user.email?.trim().toLowerCase() ?? "";
+    const isDirectlyAuthorized = AUTHORIZED_ADMIN_EMAILS.includes(email);
+
+    if (isDirectlyAuthorized) {
+      setIsAdmin(true);
+      // Attempt background RPC sync to record role in Postgres
+      supabase.rpc("claim_owner_admin").catch(() => {});
+      return;
+    }
+
+    supabase
+      .rpc("claim_owner_admin")
+      .then(({ data }) => {
+        setIsAdmin(Boolean(data));
+      })
+      .catch(() => {
+        setIsAdmin(false);
+      });
   }, [session]);
+
+  if (!isConfigured) {
+    return (
+      <Shell>
+        <ConfigForm onConfigured={() => setIsConfigured(true)} />
+      </Shell>
+    );
+  }
 
   if (!ready)
     return (
@@ -62,42 +137,115 @@ function AdminPage() {
         <p className="text-muted-foreground">Loading…</p>
       </Shell>
     );
+
   if (!session)
     return (
       <Shell>
         <AuthForm />
       </Shell>
     );
+
   if (isAdmin === null)
     return (
       <Shell>
         <p className="text-muted-foreground">Checking access…</p>
       </Shell>
     );
+
   if (!isAdmin)
     return (
       <Shell>
-        <div className="max-w-md space-y-4">
+        <div className="max-w-md space-y-4 rounded-xl border border-border bg-card p-6 shadow-sm">
           <h1 className="text-2xl font-bold">No access</h1>
           <p className="text-muted-foreground">
             This account ({session.user.email}) is not an authorized administrator account.
           </p>
           <Button variant="outline" onClick={() => supabase.auth.signOut()}>
-            Sign out
+            <LogOut className="mr-2 size-4" /> Sign out
           </Button>
         </div>
       </Shell>
     );
+
   return <Dashboard email={session.user.email ?? ""} />;
+}
+
+function ConfigForm({ onConfigured }: { onConfigured: () => void }) {
+  const [key, setKey] = useState("");
+  const [error, setError] = useState("");
+  const { url } = getSupabaseConfig();
+
+  function handleSubmit(e: FormEvent) {
+    e.preventDefault();
+    const cleanKey = key.trim();
+    if (!cleanKey) {
+      setError("Please enter a valid Supabase Anon / Publishable Key.");
+      return;
+    }
+    setSupabasePublishableKey(cleanKey);
+    onConfigured();
+  }
+
+  return (
+    <div className="max-w-md rounded-xl border border-border bg-card p-6 shadow-sm">
+      <div className="flex items-center gap-2 text-foreground">
+        <KeyRound className="size-5 text-emerald-500" />
+        <h1 className="text-xl font-bold">Admin Portal Setup</h1>
+      </div>
+      <p className="mt-2 text-sm text-muted-foreground">
+        Connect to Supabase project{" "}
+        <code className="rounded bg-muted px-1.5 py-0.5 font-mono text-xs text-foreground">
+          vnzllryrnuowvppgzzmc
+        </code>
+        .
+      </p>
+      <form onSubmit={handleSubmit} className="mt-5 space-y-4">
+        <div className="space-y-1.5">
+          <Label htmlFor="supabase-url" className="text-xs text-muted-foreground">
+            Supabase Project URL
+          </Label>
+          <Input
+            id="supabase-url"
+            value={url}
+            disabled
+            className="bg-muted font-mono text-xs text-muted-foreground"
+          />
+        </div>
+        <div className="space-y-1.5">
+          <Label htmlFor="publishable-key">Supabase Anon / Publishable Key</Label>
+          <Input
+            id="publishable-key"
+            type="password"
+            placeholder="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+            value={key}
+            onChange={(e) => {
+              setKey(e.target.value);
+              setError("");
+            }}
+            required
+            autoComplete="off"
+          />
+          <p className="text-xs text-muted-foreground">
+            Found in your Supabase Dashboard under{" "}
+            <strong>Project Settings → API → Project API Keys</strong> (anon/public).
+          </p>
+        </div>
+        {error && <p className="text-sm text-destructive">{error}</p>}
+        <Button type="submit" className="w-full">
+          Save & Connect
+        </Button>
+      </form>
+    </div>
+  );
 }
 
 function Shell({ children }: { children: React.ReactNode }) {
   return (
     <main className="min-h-screen bg-surface px-4 py-10">
       <div className="mx-auto max-w-6xl">
-        <Link to="/" className="mb-8 inline-flex items-center gap-2 font-bold text-foreground">
+        <a href="/" className="mb-8 inline-flex items-center gap-2 font-bold text-foreground">
           <img src="/dx-logo.png" alt="" className="size-9" /> DX Admin
-        </Link>
+        </a>
         {children}
       </div>
     </main>
@@ -214,17 +362,29 @@ function Dashboard({ email }: { email: string }) {
   const [loading, setLoading] = useState(true);
   const [query, setQuery] = useState("");
   const [note, setNote] = useState("");
+  const [fetchError, setFetchError] = useState<string | null>(null);
 
   async function load() {
     setLoading(true);
-    const { data } = await supabase
-      .from("waitlist")
-      .select("*")
-      .order("created_at", { ascending: false })
-      .limit(5000);
-    setRows((data as Row[]) ?? []);
-    setLoading(false);
+    setFetchError(null);
+    try {
+      const { data, error } = await supabase
+        .from("waitlist")
+        .select("*")
+        .order("created_at", { ascending: false })
+        .limit(5000);
+      if (error) {
+        setFetchError(error.message);
+      } else {
+        setRows((data as Row[]) ?? []);
+      }
+    } catch (err: unknown) {
+      setFetchError(err instanceof Error ? err.message : "Failed to load waitlist");
+    } finally {
+      setLoading(false);
+    }
   }
+
   useEffect(() => {
     load();
   }, []);
@@ -325,9 +485,20 @@ function Dashboard({ email }: { email: string }) {
           <p className="text-sm text-muted-foreground">Signed in as {email}</p>
         </div>
         <Button variant="outline" onClick={() => supabase.auth.signOut()}>
-          <LogOut /> Sign out
+          <LogOut className="mr-2 size-4" /> Sign out
         </Button>
       </div>
+
+      {fetchError && (
+        <div className="mb-6 flex flex-wrap items-center justify-between gap-3 rounded-lg border border-destructive/40 bg-destructive/10 p-4 text-sm text-destructive">
+          <p>
+            <strong>Error loading waitlist entries:</strong> {fetchError}
+          </p>
+          <Button size="sm" variant="outline" onClick={load}>
+            <RefreshCw className="mr-1.5 size-3.5" /> Retry
+          </Button>
+        </div>
+      )}
 
       <div className="mb-6 grid gap-4 sm:grid-cols-3">
         {[

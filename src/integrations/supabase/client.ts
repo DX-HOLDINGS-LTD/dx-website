@@ -30,26 +30,67 @@ function createSupabaseFetch(supabaseKey: string): typeof fetch {
   };
 }
 
-function createSupabaseClient() {
-  // Use import.meta.env for client-side (Vite build-time replacement)
-  // Fall back to process.env for SSR (server-side rendering)
-  const SUPABASE_URL = import.meta.env["VITE_SUPABASE_URL"] || process.env["SUPABASE_URL"];
-  const SUPABASE_PUBLISHABLE_KEY =
-    import.meta.env["VITE_SUPABASE_PUBLISHABLE_KEY"] || process.env["SUPABASE_PUBLISHABLE_KEY"];
-
-  if (!SUPABASE_URL || !SUPABASE_PUBLISHABLE_KEY) {
-    const missing = [
-      ...(!SUPABASE_URL ? ["SUPABASE_URL"] : []),
-      ...(!SUPABASE_PUBLISHABLE_KEY ? ["SUPABASE_PUBLISHABLE_KEY"] : []),
-    ];
-    const message = `Missing Supabase environment variable(s): ${missing.join(", ")}. Connect Supabase in Lovable Cloud.`;
-    console.error(`[Supabase] ${message}`);
-    throw new Error(message);
+function safeGetEnv(key: string): string | undefined {
+  try {
+    const metaEnv =
+      typeof import.meta !== "undefined"
+        ? (import.meta as { env?: Record<string, string | undefined> }).env
+        : undefined;
+    if (metaEnv?.[key]) {
+      return metaEnv[key];
+    }
+  } catch {
+    // ignore
   }
 
-  return createClient<Database>(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY, {
+  try {
+    if (typeof process !== "undefined" && process.env?.[key]) {
+      return process.env[key];
+    }
+  } catch {
+    // ignore
+  }
+
+  return undefined;
+}
+
+export function getSupabaseConfig() {
+  const url =
+    safeGetEnv("VITE_SUPABASE_URL") ||
+    safeGetEnv("SUPABASE_URL") ||
+    "https://vnzllryrnuowvppgzzmc.supabase.co";
+
+  const key =
+    safeGetEnv("VITE_SUPABASE_PUBLISHABLE_KEY") ||
+    safeGetEnv("SUPABASE_PUBLISHABLE_KEY") ||
+    (typeof window !== "undefined"
+      ? localStorage.getItem("sb_publishable_key") ||
+        localStorage.getItem("VITE_SUPABASE_PUBLISHABLE_KEY") ||
+        ""
+      : "");
+
+  return { url, key };
+}
+
+export function isSupabaseConfigured(): boolean {
+  const { url, key } = getSupabaseConfig();
+  return Boolean(url && key);
+}
+
+export function setSupabasePublishableKey(key: string) {
+  if (typeof window !== "undefined") {
+    localStorage.setItem("sb_publishable_key", key.trim());
+    _supabase = undefined;
+  }
+}
+
+function createSupabaseClient() {
+  const { url, key } = getSupabaseConfig();
+  const effectiveKey = key || "placeholder-anon-key";
+
+  return createClient<Database>(url, effectiveKey, {
     global: {
-      fetch: createSupabaseFetch(SUPABASE_PUBLISHABLE_KEY),
+      fetch: createSupabaseFetch(effectiveKey),
     },
     auth: {
       storage: brokeredPreviewStorage(),
