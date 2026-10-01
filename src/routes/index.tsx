@@ -32,7 +32,6 @@ import {
   Sparkles,
   WalletCards,
   X,
-  Youtube,
   Wifi,
   Zap,
   type LucideIcon,
@@ -1178,14 +1177,43 @@ function FAQ() {
   );
 }
 
+function TikTokIcon({ className }: { className?: string }) {
+  return (
+    <svg
+      role="img"
+      viewBox="0 0 24 24"
+      fill="currentColor"
+      className={className}
+      aria-hidden="true"
+    >
+      <path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.99v7.94c.02 1.87-.43 3.77-1.46 5.3-1.24 1.83-3.27 3.09-5.46 3.42-1.92.3-3.92-.04-5.63-.99-1.92-1.07-3.37-2.91-3.88-5.06-.52-2.14-.14-4.47.98-6.39 1.14-1.93 3.08-3.3 5.27-3.77.72-.15 1.46-.22 2.2-.2v4.11c-.56-.05-1.14-.02-1.68.14-1.01.29-1.89.98-2.43 1.91-.56.97-.68 2.16-.36 3.23.32 1.05 1.09 1.94 2.09 2.42 1 .48 2.2.49 3.22.04 1.06-.46 1.84-1.44 2.06-2.58.12-.64.13-1.3.13-1.95V.02z" />
+    </svg>
+  );
+}
+
 const socials = [
-  ["TikTok", Zap],
-  ["Instagram", Instagram],
-  ["Facebook", Facebook],
-  ["X", X],
-  ["YouTube", Youtube],
-  ["LinkedIn", Linkedin],
-] satisfies ReadonlyArray<readonly [string, LucideIcon]>;
+  {
+    name: "TikTok",
+    href: "https://www.tiktok.com/@dx_global1",
+    Icon: TikTokIcon,
+  },
+  {
+    name: "Instagram",
+    href: "https://www.instagram.com/dx_global1?stkn=ZGV0eGg3aHNyNjlk&utm_source=qr",
+    Icon: Instagram,
+  },
+  {
+    name: "Facebook",
+    href: "https://www.facebook.com/share/14s7mxM7GUL/?mibextid=wwXIfr",
+    Icon: Facebook,
+  },
+  {
+    name: "LinkedIn",
+    href: "https://www.linkedin.com/company/dx-gm/",
+    Icon: Linkedin,
+  },
+];
+
 function JourneyContact() {
   const [sent, setSent] = useState(false);
   function submit(e: FormEvent<HTMLFormElement>) {
@@ -1207,12 +1235,14 @@ function JourneyContact() {
             text="Follow our journey as we build DX from the ground up."
           />
           <div className="mx-auto mt-10 flex max-w-xl flex-wrap justify-center gap-3">
-            {socials.map(([name, Icon]) => (
+            {socials.map(({ name, href, Icon }) => (
               <a
                 key={name}
-                href="#journey"
-                aria-label={name}
-                title={`${name} link coming soon`}
+                href={href}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={`Follow DX on ${name}`}
+                title={`Follow DX on ${name}`}
                 className="grid size-12 place-items-center rounded-full border border-border transition-colors hover:border-primary hover:bg-brand-soft hover:text-primary-hover"
               >
                 <Icon className="size-5" />

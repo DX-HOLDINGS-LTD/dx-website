@@ -32,18 +32,14 @@ function createSupabaseFetch(supabaseKey: string): typeof fetch {
 
 export function getSupabaseConfig() {
   // Static references are required so the build inlines the real values.
-  const url =
-    import.meta.env['VITE_SUPABASE_URL'] ||
-    "https://vnzllryrnuowvppgzzmc.supabase.co";
+  const url = import.meta.env["VITE_SUPABASE_URL"] || "https://vnzllryrnuowvppgzzmc.supabase.co";
 
   const key =
-    import.meta.env['VITE_SUPABASE_PUBLISHABLE_KEY'] ||
+    import.meta.env["VITE_SUPABASE_PUBLISHABLE_KEY"] ||
     "sb_publishable_1M-0-ybmDJaPv4X_APiToQ_wmwk81Bw";
 
   return { url, key };
 }
-
-
 
 export function isSupabaseConfigured(): boolean {
   const { url, key } = getSupabaseConfig();

@@ -127,7 +127,6 @@ function AdminPage() {
         setIsAdmin(false);
       }
     })();
-
   }, [session]);
 
   if (!isConfigured) {
