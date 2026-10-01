@@ -108,19 +108,26 @@ function AdminPage() {
 
     if (isDirectlyAuthorized) {
       setIsAdmin(true);
-      // Attempt background RPC sync to record role in Postgres
-      supabase.rpc("claim_owner_admin").catch(() => {});
+      // Record the role in the database in the background.
+      void (async () => {
+        try {
+          await supabase.rpc("claim_owner_admin");
+        } catch {
+          // ignore
+        }
+      })();
       return;
     }
 
-    supabase
-      .rpc("claim_owner_admin")
-      .then(({ data }) => {
+    void (async () => {
+      try {
+        const { data } = await supabase.rpc("claim_owner_admin");
         setIsAdmin(Boolean(data));
-      })
-      .catch(() => {
+      } catch {
         setIsAdmin(false);
-      });
+      }
+    })();
+
   }, [session]);
 
   if (!isConfigured) {
