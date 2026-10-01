@@ -30,47 +30,19 @@ function createSupabaseFetch(supabaseKey: string): typeof fetch {
   };
 }
 
-function safeGetEnv(key: string): string | undefined {
-  try {
-    const metaEnv =
-      typeof import.meta !== "undefined"
-        ? (import.meta as { env?: Record<string, string | undefined> }).env
-        : undefined;
-    if (metaEnv?.[key]) {
-      return metaEnv[key];
-    }
-  } catch {
-    // ignore
-  }
-
-  try {
-    if (typeof process !== "undefined" && process.env?.[key]) {
-      return process.env[key];
-    }
-  } catch {
-    // ignore
-  }
-
-  return undefined;
-}
-
 export function getSupabaseConfig() {
+  // Static references are required so the build inlines the real values.
   const url =
-    safeGetEnv("VITE_SUPABASE_URL") ||
-    safeGetEnv("SUPABASE_URL") ||
+    import.meta.env.VITE_SUPABASE_URL ||
     "https://vnzllryrnuowvppgzzmc.supabase.co";
 
   const key =
-    safeGetEnv("VITE_SUPABASE_PUBLISHABLE_KEY") ||
-    safeGetEnv("SUPABASE_PUBLISHABLE_KEY") ||
-    (typeof window !== "undefined"
-      ? localStorage.getItem("sb_publishable_key") ||
-        localStorage.getItem("VITE_SUPABASE_PUBLISHABLE_KEY") ||
-        ""
-      : "");
+    import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY ||
+    "sb_publishable_1M-0-ybmDJaPv4X_APiToQ_wmwk81Bw";
 
   return { url, key };
 }
+
 
 export function isSupabaseConfigured(): boolean {
   const { url, key } = getSupabaseConfig();
