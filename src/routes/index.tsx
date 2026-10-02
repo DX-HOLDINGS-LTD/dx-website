@@ -1216,11 +1216,27 @@ const socials = [
 
 function JourneyContact() {
   const [sent, setSent] = useState(false);
-  function submit(e: FormEvent<HTMLFormElement>) {
+  const [sending, setSending] = useState(false);
+  const [err, setErr] = useState("");
+  async function submit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const f = e.currentTarget;
     if (!f.checkValidity()) {
       f.reportValidity();
+      return;
+    }
+    const fd = new FormData(f);
+    setSending(true);
+    setErr("");
+    const { supabase } = await import("@/integrations/supabase/client");
+    const { error } = await supabase.from("contact_messages").insert({
+      name: String(fd.get("name") ?? "").trim(),
+      email: String(fd.get("email") ?? "").trim(),
+      message: String(fd.get("message") ?? "").trim(),
+    });
+    setSending(false);
+    if (error) {
+      setErr("Could not send your message. Please try again.");
       return;
     }
     setSent(true);
