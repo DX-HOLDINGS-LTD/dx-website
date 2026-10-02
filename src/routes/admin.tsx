@@ -610,6 +610,61 @@ function Dashboard({ email }: { email: string }) {
           </tbody>
         </table>
       </div>
+      <Messages />
     </Shell>
+  );
+}
+
+type Msg = { id: string; name: string; email: string; message: string; created_at: string };
+
+function Messages() {
+  const [msgs, setMsgs] = useState<Msg[]>([]);
+  async function load() {
+    const { data } = await supabase
+      .from("contact_messages" as never)
+      .select("*")
+      .order("created_at", { ascending: false });
+    setMsgs((data as Msg[] | null) ?? []);
+  }
+  useEffect(() => {
+    void load();
+  }, []);
+  async function del(id: string) {
+    if (!confirm("Delete this message?")) return;
+    await supabase.from("contact_messages" as never).delete().eq("id", id);
+    void load();
+  }
+  return (
+    <section className="mt-10">
+      <h2 className="text-xl font-bold">Questions from visitors ({msgs.length})</h2>
+      <div className="mt-4 space-y-3">
+        {msgs.length === 0 ? (
+          <p className="text-sm text-muted-foreground">No messages yet.</p>
+        ) : (
+          msgs.map((m) => (
+            <div key={m.id} className="rounded-xl border border-border bg-card p-4">
+              <div className="flex flex-wrap items-center justify-between gap-2">
+                <div>
+                  <p className="font-semibold">{m.name}</p>
+                  <a
+                    href={`mailto:${m.email}?subject=Re: Your question to DX`}
+                    className="text-sm text-primary hover:underline"
+                  >
+                    {m.email}
+                  </a>
+                </div>
+                <div className="flex items-center gap-3 text-xs text-muted-foreground">
+                  {new Date(m.created_at).toLocaleString()}
+                  <button onClick={() => del(m.id)} aria-label="Delete message" className="hover:text-destructive">
+                    <Trash2 className="size-4" />
+                  </button>
+                </div>
+              </div>
+              <p className="mt-3 whitespace-pre-wrap text-sm">{m.message}</p>
+            </div>
+          ))
+        )}
+      </div>
+    </section>
   );
 }

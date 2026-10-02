@@ -1216,11 +1216,27 @@ const socials = [
 
 function JourneyContact() {
   const [sent, setSent] = useState(false);
-  function submit(e: FormEvent<HTMLFormElement>) {
+  const [sending, setSending] = useState(false);
+  const [err, setErr] = useState("");
+  async function submit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const f = e.currentTarget;
     if (!f.checkValidity()) {
       f.reportValidity();
+      return;
+    }
+    const fd = new FormData(f);
+    setSending(true);
+    setErr("");
+    const { supabase } = await import("@/integrations/supabase/client");
+    const { error } = await supabase.from("contact_messages").insert({
+      name: String(fd.get("name") ?? "").trim(),
+      email: String(fd.get("email") ?? "").trim(),
+      message: String(fd.get("message") ?? "").trim(),
+    });
+    setSending(false);
+    if (error) {
+      setErr("Could not send your message. Please try again.");
       return;
     }
     setSent(true);
@@ -1279,9 +1295,9 @@ function JourneyContact() {
           {sent ? (
             <div className="flex min-h-72 flex-col items-center justify-center border border-border bg-background p-8 text-center">
               <BadgeCheck className="size-12 text-primary" />
-              <h3 className="mt-5 text-2xl font-bold">Message ready</h3>
+              <h3 className="mt-5 text-2xl font-bold">Message sent</h3>
               <p className="mt-2 max-w-sm text-muted-foreground">
-                Thanks for reaching out. This preview does not send messages yet.
+                Thank you! Your message has been sent to the DX team. We'll reply to your email soon.
               </p>
             </div>
           ) : (
@@ -1291,6 +1307,7 @@ function JourneyContact() {
                   <Label htmlFor="contact-name">Full Name</Label>
                   <Input
                     id="contact-name"
+                    name="name"
                     required
                     minLength={2}
                     maxLength={100}
@@ -1301,6 +1318,7 @@ function JourneyContact() {
                   <Label htmlFor="contact-email">Email Address</Label>
                   <Input
                     id="contact-email"
+                    name="email"
                     type="email"
                     required
                     maxLength={255}
@@ -1311,14 +1329,16 @@ function JourneyContact() {
                   <Label htmlFor="message">Message</Label>
                   <Textarea
                     id="message"
+                    name="message"
                     required
                     minLength={10}
                     maxLength={1000}
                     className="mt-2 min-h-32 resize-y"
                   />
                 </div>
-                <Button size="lg" type="submit">
-                  Contact Us <ArrowRight />
+                {err && <p className="text-sm text-destructive">{err}</p>}
+                <Button size="lg" type="submit" disabled={sending}>
+                  {sending ? "Sending..." : "Contact Us"} <ArrowRight />
                 </Button>
               </div>
             </form>
