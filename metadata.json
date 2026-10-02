@@ -1,0 +1,5 @@
+{
+  "name": "DX — Digital Dollars, Made Simple",
+  "description": "Buy, sell, send and manage USDT through DX, built for The Gambia.",
+  "capabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
