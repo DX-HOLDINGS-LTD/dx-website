@@ -49,7 +49,7 @@ export interface WaitlistRecord {
   full_name: string;
   phone: string;
   email: string;
-  region: string;
+  region: string | null;
   use_case: string;
   created_at: string;
 }

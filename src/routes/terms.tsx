@@ -182,8 +182,8 @@ function TermsPage() {
             <p>For any questions regarding these Terms, please contact:</p>
             <div className="rounded-xl border border-border bg-surface p-6 space-y-2">
               <p className="font-bold text-foreground">DX Legal &amp; Compliance</p>
-              <p>Email: abdoulieojay@gmail.com</p>
-              <p>Phone: +220 338 4626</p>
+              <p>Email: founder@dxcompany.org</p>
+              <p>Phone: +220 866714855</p>
               <p>The Gambia, West Africa</p>
             </div>
           </section>
