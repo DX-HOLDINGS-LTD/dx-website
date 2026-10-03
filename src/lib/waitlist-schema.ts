@@ -37,9 +37,6 @@ export const WaitlistSubmissionSchema = z.object({
     .toLowerCase()
     .email("Please enter a valid email address.")
     .max(255, "Email address is too long."),
-  region: z.enum(GambianRegions, {
-    errorMap: () => ({ message: "Please select your region." }),
-  }),
   useCase: z.enum(WaitlistUseCases, {
     errorMap: () => ({ message: "Please select your main use." }),
   }),
@@ -52,7 +49,7 @@ export interface WaitlistRecord {
   full_name: string;
   phone: string;
   email: string;
-  region: string;
+  region: string | null;
   use_case: string;
   created_at: string;
 }

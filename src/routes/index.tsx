@@ -55,8 +55,19 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { VideoStory } from "@/components/video-story";
-import { GambianRegions, WaitlistUseCases } from "@/lib/waitlist-schema";
+import { WaitlistUseCases } from "@/lib/waitlist-schema";
 import { saveWaitlistSubmission } from "@/lib/waitlist-service";
+import { supabase } from "@/integrations/supabase/client";
+import {
+  Activity,
+  CandlestickChart,
+  Laptop,
+  MessageCircle,
+  PiggyBank,
+  Store,
+  UserCheck,
+  Vault,
+} from "lucide-react";
 import dxLogo from "@/assets/dx-logo-icon-transparent.png.asset.json";
 
 export const Route = createFileRoute("/")({
@@ -333,34 +344,47 @@ const features = [
   [History, "Track", "View your balance and transaction history in one place."],
 ] satisfies ReadonlyArray<readonly [LucideIcon, string, string]>;
 
+const audiences = [
+  [CandlestickChart, "Forex Traders"],
+  [Laptop, "Freelancers"],
+  [Store, "Online Workers & Businesses"],
+  [PiggyBank, "Digital Dollar Savers"],
+] satisfies ReadonlyArray<readonly [LucideIcon, string]>;
+
+const WHATSAPP_URL =
+  "https://wa.me/220866714855?text=" +
+  encodeURIComponent("Hello DX team, I'd like to learn more about DX.");
+
 function IntroAndFeatures() {
   return (
     <>
-      <section id="wallet" className="bg-background py-24 sm:py-32">
-        <div className="mx-auto grid max-w-7xl gap-12 px-5 sm:px-8 lg:grid-cols-[.8fr_1.2fr] lg:px-10">
+      <section id="wallet" className="bg-dark py-24 sm:py-32">
+        <div className="mx-auto grid max-w-7xl items-center gap-14 px-5 sm:px-8 lg:grid-cols-[1.1fr_.9fr] lg:px-10">
           <div>
-            <p className="text-sm font-bold text-primary-hover">BUILT FOR EVERYDAY USE</p>
-            <h2 className="mt-4 text-4xl font-extrabold leading-tight sm:text-5xl">
-              Your Digital
-              <br />
-              Dollar Wallet.
+            <p className="text-xs font-extrabold text-primary">BUILT FOR REAL LIFE</p>
+            <h2 className="mt-4 text-4xl font-extrabold leading-tight text-dark-foreground sm:text-5xl">
+              Designed for the people who move the world.
             </h2>
-          </div>
-          <div className="border-l-2 border-primary pl-6 sm:pl-10">
-            <p className="max-w-2xl text-xl leading-9 text-foreground">
-              DX is designed to make buying, selling, sending and managing USDT simple for Gambians.
+            <p className="mt-6 max-w-xl text-lg leading-8 text-dark-foreground/65">
+              USDT is made for real world utility. Everyday Africans use it for business
+              transactions, bill payments, and to hedge against inflation.
             </p>
-            <div className="mt-8 grid gap-3 text-base font-semibold sm:grid-cols-2">
-              <p className="flex gap-2">
-                <Check className="mt-0.5 size-5 text-primary" /> No complicated exchanges.
-              </p>
-              <p className="flex gap-2">
-                <Check className="mt-0.5 size-5 text-primary" /> No unnecessary complexity.
-              </p>
+            <div className="mt-10 grid gap-4 sm:grid-cols-2">
+              {audiences.map(([Icon, title]) => (
+                <div
+                  key={title}
+                  className="flex items-center gap-4 rounded-xl border border-dark-border bg-dark-surface p-5"
+                >
+                  <span className="grid size-11 shrink-0 place-items-center rounded-lg bg-primary/10 text-primary">
+                    <Icon className="size-5" />
+                  </span>
+                  <span className="font-bold text-dark-foreground">{title}</span>
+                </div>
+              ))}
             </div>
-            <p className="mt-6 text-muted-foreground">
-              Just a simple way to manage your digital dollars.
-            </p>
+          </div>
+          <div className="mx-auto w-full max-w-md">
+            <WalletPhone />
           </div>
         </div>
       </section>
@@ -522,77 +546,91 @@ function BuySell() {
           <TradeCard />
           <TradeCard sell />
         </div>
+        <div className="mt-10">
+          <p className="text-xs font-extrabold text-primary">PAYMENT METHODS</p>
+          <div className="mt-4 grid grid-cols-2 gap-4 lg:grid-cols-4">
+            {paymentMethods.map(([Icon, name, text]) => (
+              <article
+                key={name}
+                className="rounded-xl border border-dark-border bg-dark-surface p-5"
+              >
+                <span className="grid size-11 place-items-center rounded-full bg-primary/10 text-primary">
+                  <Icon className="size-5" />
+                </span>
+                <h3 className="mt-4 font-bold text-dark-foreground">{name}</h3>
+                <p className="mt-1 text-sm text-dark-foreground/55">{text}</p>
+              </article>
+            ))}
+          </div>
+        </div>
       </div>
     </section>
   );
 }
 
-function SendShowcase() {
-  return (
-    <section className="overflow-hidden bg-surface py-24 sm:py-32">
-      <div className="mx-auto grid max-w-7xl items-center gap-14 px-5 sm:px-8 lg:grid-cols-2 lg:px-10">
-        <div>
-          <SectionHeading
-            eyebrow="SEND USDT"
-            title="Send Digital Dollars in Seconds."
-            text="Choose the detail you already have. DX is designed to make sending feel quick and familiar."
-          />
-          <div className="mt-8 flex flex-wrap gap-3">
-            {(
-              [
-                [BadgeCheck, "DX ID"],
-                [Phone, "Phone Number"],
-                [QrCode, "QR Code"],
-              ] satisfies ReadonlyArray<readonly [LucideIcon, string]>
-            ).map(([Icon, label]) => (
-              <span
-                key={label}
-                className="inline-flex items-center gap-2 rounded-full border border-border bg-background px-4 py-2 text-sm font-semibold"
-              >
-                <Icon className="size-4 text-primary-hover" />
-                {label}
-              </span>
-            ))}
-          </div>
-        </div>
-        <div className="mx-auto w-full max-w-md rounded-[2rem] border-[6px] border-foreground bg-background p-6 shadow-2xl">
-          <div className="flex items-center justify-between">
-            <h3 className="text-xl font-extrabold">Send USDT</h3>
-            <span className="text-xs text-muted-foreground">Preview</span>
-          </div>
-          <div className="mt-8 space-y-5">
-            <div>
-              <p className="text-xs font-semibold text-muted-foreground">To</p>
-              <div className="mt-2 rounded-lg border border-input p-4">
-                <div className="flex items-center gap-3">
-                  <span className="grid size-10 shrink-0 place-items-center rounded-full bg-brand-soft text-sm font-extrabold text-primary-hover">
-                    FC
-                  </span>
-                  <div className="min-w-0">
-                    <p className="flex items-center gap-1.5 text-sm font-bold">
-                      Fatou Camara
-                      <BadgeCheck className="size-4 shrink-0 text-primary-hover" />
-                    </p>
-                    <p className="mt-0.5 text-xs text-muted-foreground">DX102847</p>
-                  </div>
-                </div>
-              </div>
-            </div>
+const paymentMethods = [
+  [Smartphone, "Wave", "Pay or receive with Wave mobile money."],
+  [Smartphone, "Afrimoney", "Pay or receive with Afrimoney."],
+  [Landmark, "Bank Deposit", "Transfer to or from your local bank."],
+  [Banknote, "Cash Pickup", "Collect or hand over cash in person."],
+] satisfies ReadonlyArray<readonly [LucideIcon, string, string]>;
 
-            <div>
-              <p className="text-xs font-semibold text-muted-foreground">Amount</p>
-              <div className="mt-2 flex items-center justify-between rounded-lg border border-primary bg-brand-soft p-4">
-                <span className="text-2xl font-bold">50</span>
-                <span className="font-bold text-primary-hover">USDT</span>
-              </div>
-            </div>
-            <Button size="lg" className="w-full" disabled>
-              Send USDT <Send />
-            </Button>
-            <p className="text-center text-[11px] text-muted-foreground">
-              Visual demonstration only
-            </p>
-          </div>
+const trustItems = [
+  [
+    UserCheck,
+    "KYC & AML Verification",
+    "Identity verification and anti-money laundering controls built into compliance frameworks.",
+  ],
+  [
+    Landmark,
+    "Regulated Partners",
+    "Works alongside licensed and regulated financial institutions to ensure compliance.",
+  ],
+  [
+    Vault,
+    "Third-Party Custody",
+    "Digital asset custody powered by regulated infrastructure partners.",
+  ],
+  [
+    LockKeyhole,
+    "Secure Technology",
+    "End-to-end encryption, multi-factor authentication, and secure API architecture.",
+  ],
+  [
+    Activity,
+    "Transaction Monitoring",
+    "Automated screening and real-time monitoring to prevent illicit activities.",
+  ],
+  [
+    ShieldCheck,
+    "Data Protection",
+    "Strict data privacy practices ensuring your personal information remains confidential.",
+  ],
+] satisfies ReadonlyArray<readonly [LucideIcon, string, string]>;
+
+function TrustCompliance() {
+  return (
+    <section id="trust" className="bg-dark py-24 sm:py-32">
+      <div className="mx-auto max-w-7xl px-5 sm:px-8 lg:px-10">
+        <SectionHeading
+          eyebrow="TRUST & COMPLIANCE"
+          title="Built with trusted partners"
+          text="DX provides the technology layer while regulated partners support the regulated financial infrastructure behind our services."
+          inverse
+        />
+        <div className="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          {trustItems.map(([Icon, title, text]) => (
+            <article
+              key={title}
+              className="rounded-xl border border-dark-border bg-dark-surface p-7 transition-colors hover:border-primary/50"
+            >
+              <span className="grid size-12 place-items-center rounded-lg bg-primary/10 text-primary">
+                <Icon />
+              </span>
+              <h3 className="mt-6 text-lg font-bold text-dark-foreground">{title}</h3>
+              <p className="mt-2 leading-7 text-dark-foreground/60">{text}</p>
+            </article>
+          ))}
         </div>
       </div>
     </section>
@@ -768,51 +806,6 @@ function VideoStorySection() {
   return <VideoStory logoUrl={dxLogo.url} />;
 }
 
-function ComingSoon() {
-  const items: ReadonlyArray<readonly [LucideIcon, string, string, string, string]> = [
-    [
-      Smartphone,
-      "Bills & Airtime",
-      "Pay for Everyday Essentials.",
-      "Future support for electricity, airtime, utilities and other everyday payments.",
-      "Coming Soon",
-    ],
-    [
-      CircleDollarSign,
-      "More Financial Services",
-      "More Ways to Use Your Money.",
-      "DX plans to continue expanding its financial services.",
-      "More Coming Soon",
-    ],
-  ];
-  return (
-    <section id="coming-soon" className="bg-surface py-24 sm:py-32">
-      <div className="mx-auto max-w-7xl px-5 sm:px-8 lg:px-10">
-        <SectionHeading
-          eyebrow="THE JOURNEY AHEAD"
-          title="And We're Just Getting Started."
-          text="DX is the beginning of a larger digital-finance journey."
-        />
-        <div className="mt-14 grid gap-5 lg:grid-cols-2">
-          {items.map(([Icon, title, sub, text, badge]) => (
-            <article key={title} className="border border-border bg-background p-7 rounded-xl">
-              <div className="flex items-start justify-between gap-3">
-                <Icon className="size-8 text-primary-hover" />
-                <span className="rounded-full border border-primary/30 bg-brand-soft px-3 py-1 text-[10px] font-bold text-primary-hover">
-                  {badge}
-                </span>
-              </div>
-              <h3 className="mt-10 text-2xl font-bold">{title}</h3>
-              <p className="mt-2 font-semibold text-primary-hover">{sub}</p>
-              <p className="mt-4 leading-7 text-muted-foreground">{text}</p>
-            </article>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
-
 function FieldError({ children }: { children: string | undefined }) {
   return children ? (
     <p className="mt-1.5 text-xs font-medium text-destructive" role="alert">
@@ -826,6 +819,13 @@ function Waitlist() {
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [duplicateMessage, setDuplicateMessage] = useState<string>("");
   const [confirmedEmail, setConfirmedEmail] = useState<string>("");
+  const [count, setCount] = useState<number | null>(null);
+
+  useEffect(() => {
+    supabase.rpc("waitlist_count").then(({ data }) => {
+      if (typeof data === "number") setCount(data);
+    });
+  }, [status]);
 
   async function submit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -834,14 +834,12 @@ function Waitlist() {
     const fullName = String(data.get("name") || "").trim();
     const phone = String(data.get("phone") || "").trim();
     const email = String(data.get("email") || "").trim();
-    const region = String(data.get("region") || "").trim();
     const useCase = String(data.get("useCase") || "").trim();
 
     if (fullName.length < 2) next["name"] = "Please enter your full name.";
     if (!/^\+?[0-9\s-]{7,18}$/.test(phone))
       next["phone"] = "Please enter a valid phone number (e.g. +220 338 4626).";
     if (!/^\S+@\S+\.\S+$/.test(email)) next["email"] = "Please enter a valid email address.";
-    if (!region) next["region"] = "Please select your region.";
     if (!useCase) next["useCase"] = "Please select what you would mainly use DX for.";
 
     setErrors(next);
@@ -855,7 +853,6 @@ function Waitlist() {
         fullName,
         phone,
         email,
-        region: region as (typeof GambianRegions)[number],
         useCase: useCase as (typeof WaitlistUseCases)[number],
       });
 
@@ -908,10 +905,12 @@ function Waitlist() {
             DX is being built now. Join the waiting list and be among the first to experience simple
             digital finance built for The Gambia.
           </p>
-          <div className="mt-8 flex items-center gap-3 text-xs text-primary-foreground/80">
-            <span className="size-2 rounded-full bg-white animate-pulse" />
-            Active Priority Queue • Early access rollouts starting 2026
-          </div>
+          {count !== null && (
+            <div className="mt-8 inline-flex items-center gap-3 rounded-full bg-primary-foreground/10 px-5 py-3 text-sm font-bold text-primary-foreground">
+              <span className="size-2.5 rounded-full bg-primary-foreground animate-pulse" />
+              {count.toLocaleString()}+ people already on the priority list
+            </div>
+          )}
         </div>
 
         <div className="bg-background p-6 shadow-2xl sm:p-9 rounded-2xl">
@@ -997,7 +996,7 @@ function Waitlist() {
                   />
                   <FieldError>{errors["phone"]}</FieldError>
                 </div>
-                <div>
+                <div className="sm:col-span-2">
                   <Label htmlFor="email">Email Address</Label>
                   <Input
                     id="email"
@@ -1009,26 +1008,6 @@ function Waitlist() {
                     aria-invalid={!!errors["email"]}
                   />
                   <FieldError>{errors["email"]}</FieldError>
-                </div>
-                <div>
-                  <Label htmlFor="region">Region in The Gambia</Label>
-                  <select
-                    id="region"
-                    name="region"
-                    defaultValue=""
-                    className="mt-2 h-12 w-full rounded-md border border-input bg-background px-3 text-sm focus-visible:ring-2 focus-visible:ring-ring"
-                    aria-invalid={!!errors["region"]}
-                  >
-                    <option value="" disabled>
-                      Select your region
-                    </option>
-                    {GambianRegions.map((x) => (
-                      <option key={x} value={x}>
-                        {x}
-                      </option>
-                    ))}
-                  </select>
-                  <FieldError>{errors["region"]}</FieldError>
                 </div>
               </div>
 
@@ -1273,23 +1252,33 @@ function JourneyContact() {
             <SectionHeading eyebrow="CONTACT" title="Have a Question?" />
             <div className="mt-8 space-y-4">
               <a
-                href="mailto:abdoulieojay@gmail.com"
+                href="mailto:founder@dxcompany.org"
                 className="flex items-center gap-3 font-semibold hover:text-primary-hover"
               >
                 <span className="grid size-10 place-items-center rounded-full bg-brand-soft">
                   <Send className="size-4" />
                 </span>
-                abdoulieojay@gmail.com
+                founder@dxcompany.org
               </a>
               <a
-                href="tel:+2203384626"
+                href="tel:+220866714855"
                 className="flex items-center gap-3 font-semibold hover:text-primary-hover"
               >
                 <span className="grid size-10 place-items-center rounded-full bg-brand-soft">
                   <Phone className="size-4" />
                 </span>
-                +220 338 4626
+                +220 866714855
               </a>
+              <Button asChild size="lg" className="mt-2">
+                <a
+                  href={WHATSAPP_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Chat with DX on WhatsApp"
+                >
+                  <MessageCircle /> Chat on WhatsApp
+                </a>
+              </Button>
             </div>
           </div>
           {sent ? (
@@ -1396,11 +1385,9 @@ function HomePage() {
       <HowItWorks />
       <BuySell />
       <DXCard />
-      <SendShowcase />
+      <TrustCompliance />
       <ExternalAndWhy />
       <VideoStorySection />
-
-      <ComingSoon />
       <Waitlist />
       <Learn />
       <FAQ />

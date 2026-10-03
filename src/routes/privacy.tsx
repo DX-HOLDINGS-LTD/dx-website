@@ -192,10 +192,10 @@ function PrivacyPage() {
             <p>
               To exercise any of these rights, simply email our team at{" "}
               <a
-                href="mailto:abdoulieojay@gmail.com"
+                href="mailto:founder@dxcompany.org"
                 className="font-bold text-primary-hover hover:underline"
               >
-                abdoulieojay@gmail.com
+                founder@dxcompany.org
               </a>
               .
             </p>
@@ -218,8 +218,8 @@ function PrivacyPage() {
             </p>
             <div className="rounded-xl border border-border bg-surface p-6 space-y-2">
               <p className="font-bold text-foreground">DX Official Team</p>
-              <p>Email: abdoulieojay@gmail.com</p>
-              <p>Phone: +220 338 4626</p>
+              <p>Email: founder@dxcompany.org</p>
+              <p>Phone: +220 866714855</p>
               <p>Location: The Gambia</p>
             </div>
           </section>
