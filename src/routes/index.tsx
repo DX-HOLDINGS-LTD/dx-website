@@ -637,78 +637,6 @@ function TrustCompliance() {
   );
 }
 
-function SendShowcase() {
-  return (
-    <section className="overflow-hidden bg-surface py-24 sm:py-32">
-      <div className="mx-auto grid max-w-7xl items-center gap-14 px-5 sm:px-8 lg:grid-cols-2 lg:px-10">
-        <div>
-          <SectionHeading
-            eyebrow="SEND USDT"
-            title="Send Digital Dollars in Seconds."
-            text="Choose the detail you already have. DX is designed to make sending feel quick and familiar."
-          />
-          <div className="mt-8 flex flex-wrap gap-3">
-            {(
-              [
-                [BadgeCheck, "DX ID"],
-                [Phone, "Phone Number"],
-                [QrCode, "QR Code"],
-              ] satisfies ReadonlyArray<readonly [LucideIcon, string]>
-            ).map(([Icon, label]) => (
-              <span
-                key={label}
-                className="inline-flex items-center gap-2 rounded-full border border-border bg-background px-4 py-2 text-sm font-semibold"
-              >
-                <Icon className="size-4 text-primary-hover" />
-                {label}
-              </span>
-            ))}
-          </div>
-        </div>
-        <div className="mx-auto w-full max-w-md rounded-[2rem] border-[6px] border-foreground bg-background p-6 shadow-2xl">
-          <div className="flex items-center justify-between">
-            <h3 className="text-xl font-extrabold">Send USDT</h3>
-            <span className="text-xs text-muted-foreground">Preview</span>
-          </div>
-          <div className="mt-8 space-y-5">
-            <div>
-              <p className="text-xs font-semibold text-muted-foreground">To</p>
-              <div className="mt-2 rounded-lg border border-input p-4">
-                <div className="flex items-center gap-3">
-                  <span className="grid size-10 shrink-0 place-items-center rounded-full bg-brand-soft text-sm font-extrabold text-primary-hover">
-                    FC
-                  </span>
-                  <div className="min-w-0">
-                    <p className="flex items-center gap-1.5 text-sm font-bold">
-                      Fatou Camara
-                      <BadgeCheck className="size-4 shrink-0 text-primary-hover" />
-                    </p>
-                    <p className="mt-0.5 text-xs text-muted-foreground">DX102847</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div>
-              <p className="text-xs font-semibold text-muted-foreground">Amount</p>
-              <div className="mt-2 flex items-center justify-between rounded-lg border border-primary bg-brand-soft p-4">
-                <span className="text-2xl font-bold">50</span>
-                <span className="font-bold text-primary-hover">USDT</span>
-              </div>
-            </div>
-            <Button size="lg" className="w-full" disabled>
-              Send USDT <Send />
-            </Button>
-            <p className="text-center text-[11px] text-muted-foreground">
-              Visual demonstration only
-            </p>
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-}
-
 function ExternalAndWhy() {
   const why: ReadonlyArray<readonly [LucideIcon, string, string]> = [
     [Sparkles, "Simple", "Designed for people who don't want complicated financial platforms."],
@@ -876,51 +804,6 @@ function DXCard() {
 
 function VideoStorySection() {
   return <VideoStory logoUrl={dxLogo.url} />;
-}
-
-function ComingSoon() {
-  const items: ReadonlyArray<readonly [LucideIcon, string, string, string, string]> = [
-    [
-      Smartphone,
-      "Bills & Airtime",
-      "Pay for Everyday Essentials.",
-      "Future support for electricity, airtime, utilities and other everyday payments.",
-      "Coming Soon",
-    ],
-    [
-      CircleDollarSign,
-      "More Financial Services",
-      "More Ways to Use Your Money.",
-      "DX plans to continue expanding its financial services.",
-      "More Coming Soon",
-    ],
-  ];
-  return (
-    <section id="coming-soon" className="bg-surface py-24 sm:py-32">
-      <div className="mx-auto max-w-7xl px-5 sm:px-8 lg:px-10">
-        <SectionHeading
-          eyebrow="THE JOURNEY AHEAD"
-          title="And We're Just Getting Started."
-          text="DX is the beginning of a larger digital-finance journey."
-        />
-        <div className="mt-14 grid gap-5 lg:grid-cols-2">
-          {items.map(([Icon, title, sub, text, badge]) => (
-            <article key={title} className="border border-border bg-background p-7 rounded-xl">
-              <div className="flex items-start justify-between gap-3">
-                <Icon className="size-8 text-primary-hover" />
-                <span className="rounded-full border border-primary/30 bg-brand-soft px-3 py-1 text-[10px] font-bold text-primary-hover">
-                  {badge}
-                </span>
-              </div>
-              <h3 className="mt-10 text-2xl font-bold">{title}</h3>
-              <p className="mt-2 font-semibold text-primary-hover">{sub}</p>
-              <p className="mt-4 leading-7 text-muted-foreground">{text}</p>
-            </article>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
 }
 
 function FieldError({ children }: { children: string | undefined }) {

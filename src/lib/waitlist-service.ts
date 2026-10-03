@@ -21,7 +21,7 @@ export async function saveWaitlistSubmission(data: WaitlistInput): Promise<Waitl
     full_name: v.fullName,
     phone: v.phone,
     email: v.email.toLowerCase(),
-    region: null as string | null,
+    region: null,
     use_case: v.useCase,
     created_at: new Date().toISOString(),
   };
