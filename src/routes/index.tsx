@@ -1,4 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import waveLogo from "@/assets/wave-logo.png";
+import afrimoneyLogo from "@/assets/afrimoney-logo.png";
 import { useEffect, useState, type FormEvent } from "react";
 import {
   AlertCircle,
@@ -549,16 +551,20 @@ function BuySell() {
         <div className="mt-10">
           <p className="text-xs font-extrabold text-primary">PAYMENT METHODS</p>
           <div className="mt-4 grid grid-cols-2 gap-4 lg:grid-cols-4">
-            {paymentMethods.map(([Icon, name, text]) => (
-              <article
-                key={name}
-                className="rounded-xl border border-dark-border bg-dark-surface p-5"
-              >
-                <span className="grid size-11 place-items-center rounded-full bg-primary/10 text-primary">
-                  <Icon className="size-5" />
-                </span>
-                <h3 className="mt-4 font-bold text-dark-foreground">{name}</h3>
-                <p className="mt-1 text-sm text-dark-foreground/55">{text}</p>
+            {paymentMethods.map(([logo, name, text]) => (
+              <article key={name} className="rounded-xl border border-border bg-background p-5">
+                {typeof logo === "string" ? (
+                  <img src={logo} alt={`${name} logo`} className="size-11 rounded-lg" loading="lazy" />
+                ) : (
+                  <span className="grid size-11 place-items-center rounded-lg bg-brand-soft text-primary-hover">
+                    {(() => {
+                      const Icon = logo;
+                      return <Icon className="size-5" />;
+                    })()}
+                  </span>
+                )}
+                <h3 className="mt-4 font-bold text-foreground">{name}</h3>
+                <p className="mt-1 text-sm text-muted-foreground">{text}</p>
               </article>
             ))}
           </div>
@@ -569,11 +575,11 @@ function BuySell() {
 }
 
 const paymentMethods = [
-  [Smartphone, "Wave", "Pay or receive with Wave mobile money."],
-  [Smartphone, "Afrimoney", "Pay or receive with Afrimoney."],
+  [waveLogo, "Wave", "Pay or receive with Wave mobile money."],
+  [afrimoneyLogo, "Afrimoney", "Pay or receive with Afrimoney."],
   [Landmark, "Bank Deposit", "Transfer to or from your local bank."],
   [Banknote, "Cash Pickup", "Collect or hand over cash in person."],
-] satisfies ReadonlyArray<readonly [LucideIcon, string, string]>;
+] satisfies ReadonlyArray<readonly [LucideIcon | string, string, string]>;
 
 const trustItems = [
   [
