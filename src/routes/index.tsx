@@ -536,7 +536,7 @@ function TradeCard({ sell = false }: { sell?: boolean }) {
 
 function BuySell() {
   return (
-    <section className="bg-dark pt-24 pb-10 sm:pt-32 sm:pb-12">
+    <section className="bg-dark pt-24 pb-20 sm:pt-32 sm:pb-28">
       <div className="mx-auto max-w-7xl px-5 sm:px-8 lg:px-10">
         <div className="flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
           <SectionHeading
@@ -551,13 +551,18 @@ function BuySell() {
           <TradeCard />
           <TradeCard sell />
         </div>
-        <div className="mt-10">
+        <div className="mt-14 sm:mt-16">
           <p className="text-xs font-extrabold text-primary">PAYMENT METHODS</p>
           <div className="mt-4 grid grid-cols-2 gap-4 lg:grid-cols-4">
             {paymentMethods.map(([logo, name, text]) => (
               <article key={name} className="rounded-xl border border-border bg-background p-5">
                 {typeof logo === "string" ? (
-                  <img src={logo} alt={`${name} logo`} className="size-11 rounded-lg" loading="lazy" />
+                  <img
+                    src={logo}
+                    alt={`${name} logo`}
+                    className="size-11 rounded-lg"
+                    loading="lazy"
+                  />
                 ) : (
                   <span className="grid size-11 place-items-center rounded-lg bg-brand-soft text-primary-hover">
                     {(() => {
@@ -723,7 +728,10 @@ function DXCard() {
     [ShieldCheck, "Stay in control", "Manage card access and spending from your DX account."],
   ];
   return (
-    <section id="dx-card" className="bg-dark border-t border-dark-border pt-12 pb-12 text-dark-foreground sm:pt-16 sm:pb-14">
+    <section
+      id="dx-card"
+      className="bg-dark border-t border-dark-border pt-20 pb-20 text-dark-foreground sm:pt-28 sm:pb-28"
+    >
       <div className="mx-auto max-w-7xl px-5 sm:px-8 lg:px-10">
         <div className="grid items-center gap-14 lg:grid-cols-[.9fr_1.1fr]">
           <div>
@@ -1303,7 +1311,8 @@ function JourneyContact() {
               <BadgeCheck className="size-12 text-primary" />
               <h3 className="mt-5 text-2xl font-bold">Message sent</h3>
               <p className="mt-2 max-w-sm text-muted-foreground">
-                Thank you! Your message has been sent to the DX team. We'll reply to your email soon.
+                Thank you! Your message has been sent to the DX team. We'll reply to your email
+                soon.
               </p>
             </div>
           ) : (

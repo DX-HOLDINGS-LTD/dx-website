@@ -631,7 +631,10 @@ function Messages() {
   }, []);
   async function del(id: string) {
     if (!confirm("Delete this message?")) return;
-    await supabase.from("contact_messages" as never).delete().eq("id", id);
+    await supabase
+      .from("contact_messages" as never)
+      .delete()
+      .eq("id", id);
     void load();
   }
   return (
@@ -655,7 +658,11 @@ function Messages() {
                 </div>
                 <div className="flex items-center gap-3 text-xs text-muted-foreground">
                   {new Date(m.created_at).toLocaleString()}
-                  <button onClick={() => del(m.id)} aria-label="Delete message" className="hover:text-destructive">
+                  <button
+                    onClick={() => del(m.id)}
+                    aria-label="Delete message"
+                    className="hover:text-destructive"
+                  >
                     <Trash2 className="size-4" />
                   </button>
                 </div>
