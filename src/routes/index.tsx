@@ -62,6 +62,9 @@ import { saveWaitlistSubmission } from "@/lib/waitlist-service";
 import { supabase } from "@/integrations/supabase/client";
 import {
   Activity,
+  DatabaseZap,
+  Layers,
+  Users,
   CandlestickChart,
   Laptop,
   MessageCircle,
@@ -583,58 +586,66 @@ const paymentMethods = [
 
 const trustItems = [
   [
-    UserCheck,
-    "KYC & AML Verification",
-    "Identity verification and anti-money laundering controls built into compliance frameworks.",
+    ShieldCheck,
+    "KYC & KYB Verification",
+    "Users may be required to complete identity and business verification before accessing applicable services.",
   ],
   [
-    Landmark,
+    Users,
     "Regulated Partners",
-    "Works alongside licensed and regulated financial institutions to ensure compliance.",
+    "DX plans to work with regulated local financial partners for applicable financial services and liquidity.",
   ],
   [
-    Vault,
+    Layers,
     "Third-Party Custody",
-    "Digital asset custody powered by regulated infrastructure partners.",
+    "DX is not designed to hold customer assets directly. Where custody is required, appropriate third-party custody providers may be used.",
   ],
   [
     LockKeyhole,
     "Secure Technology",
-    "End-to-end encryption, multi-factor authentication, and secure API architecture.",
+    "Secure authentication, protected account access, and safeguards for user information are built into the DX platform.",
   ],
   [
     Activity,
     "Transaction Monitoring",
-    "Automated screening and real-time monitoring to prevent illicit activities.",
+    "Applicable transactions may be subject to monitoring and compliance checks through DX and its partners.",
   ],
   [
-    ShieldCheck,
+    DatabaseZap,
     "Data Protection",
-    "Strict data privacy practices ensuring your personal information remains confidential.",
+    "User information is handled with appropriate security and privacy safeguards.",
   ],
 ] satisfies ReadonlyArray<readonly [LucideIcon, string, string]>;
 
 function TrustCompliance() {
   return (
-    <section id="trust" className="bg-dark py-24 sm:py-32">
-      <div className="mx-auto max-w-7xl px-5 sm:px-8 lg:px-10">
-        <SectionHeading
-          eyebrow="TRUST & COMPLIANCE"
-          title="Built with trusted partners"
-          text="DX provides the technology layer while regulated partners support the regulated financial infrastructure behind our services."
-          inverse
-        />
+    <section id="trust" className="bg-dark pb-24 sm:pb-32">
+      <div className="mx-auto max-w-7xl border-t border-dark-border px-5 pt-16 sm:px-8 sm:pt-20 lg:px-10">
+        <div className="mx-auto max-w-3xl text-center">
+          <p className="flex items-center justify-center gap-4 text-xs font-extrabold tracking-[.12em] text-primary">
+            <span className="h-px w-10 bg-primary" aria-hidden="true" />
+            TRUST &amp; COMPLIANCE
+            <span className="h-px w-10 bg-primary" aria-hidden="true" />
+          </p>
+          <h2 className="mt-5 text-4xl font-extrabold leading-tight text-dark-foreground sm:text-5xl">
+            Built with <span className="text-primary">trusted</span> partners
+          </h2>
+          <p className="mt-5 text-lg leading-8 text-dark-foreground/65">
+            DX provides the technology layer while regulated partners support the regulated
+            financial infrastructure behind our services.
+          </p>
+        </div>
         <div className="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {trustItems.map(([Icon, title, text]) => (
             <article
               key={title}
-              className="rounded-xl border border-dark-border bg-dark-surface p-7 transition-colors hover:border-primary/50"
+              className="rounded-xl border border-dark-border bg-gradient-to-br from-dark-surface to-dark p-7 transition-colors hover:border-primary/50"
             >
-              <span className="grid size-12 place-items-center rounded-lg bg-primary/10 text-primary">
-                <Icon />
+              <span className="grid size-14 place-items-center rounded-xl border border-primary/30 bg-primary/10 text-primary shadow-[0_0_24px_-4px_var(--color-primary)]">
+                <Icon className="size-6" />
               </span>
-              <h3 className="mt-6 text-lg font-bold text-dark-foreground">{title}</h3>
-              <p className="mt-2 leading-7 text-dark-foreground/60">{text}</p>
+              <h3 className="mt-6 text-xl font-bold text-dark-foreground">{title}</h3>
+              <p className="mt-3 leading-7 text-dark-foreground/60">{text}</p>
             </article>
           ))}
         </div>
@@ -712,7 +723,7 @@ function DXCard() {
     [ShieldCheck, "Stay in control", "Manage card access and spending from your DX account."],
   ];
   return (
-    <section id="dx-card" className="bg-dark py-24 text-dark-foreground sm:py-32">
+    <section id="dx-card" className="bg-dark pt-24 pb-12 text-dark-foreground sm:pt-32 sm:pb-14">
       <div className="mx-auto max-w-7xl px-5 sm:px-8 lg:px-10">
         <div className="grid items-center gap-14 lg:grid-cols-[.9fr_1.1fr]">
           <div>
