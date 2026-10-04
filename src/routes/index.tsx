@@ -536,7 +536,7 @@ function TradeCard({ sell = false }: { sell?: boolean }) {
 
 function BuySell() {
   return (
-    <section className="bg-dark py-24 sm:py-32">
+    <section className="bg-dark pt-24 pb-10 sm:pt-32 sm:pb-12">
       <div className="mx-auto max-w-7xl px-5 sm:px-8 lg:px-10">
         <div className="flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
           <SectionHeading
@@ -723,7 +723,7 @@ function DXCard() {
     [ShieldCheck, "Stay in control", "Manage card access and spending from your DX account."],
   ];
   return (
-    <section id="dx-card" className="bg-dark pt-24 pb-12 text-dark-foreground sm:pt-32 sm:pb-14">
+    <section id="dx-card" className="bg-dark border-t border-dark-border pt-12 pb-12 text-dark-foreground sm:pt-16 sm:pb-14">
       <div className="mx-auto max-w-7xl px-5 sm:px-8 lg:px-10">
         <div className="grid items-center gap-14 lg:grid-cols-[.9fr_1.1fr]">
           <div>
