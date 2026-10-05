@@ -227,11 +227,11 @@ function WalletPhone() {
             </span>
             <span className="pb-0.5 text-xs font-medium opacity-70">USDT</span>
           </p>
-          <p className="mt-1.5 text-[11px] opacity-70">≈ D 89,316 GMD</p>
+          <p className="mt-1.5 text-[11px] opacity-70">≈ D 90,557 GMD</p>
           <div className="mt-4 flex gap-2">
             {[
-              ["Buy", "D 148.50"],
-              ["Sell", "D 147.00"],
+              ["Buy", "D 75.00"],
+              ["Sell", "D 73.00"],
             ].map(([label, rate]) => (
               <span
                 key={label}
@@ -519,7 +519,7 @@ function TradeCard({ sell = false }: { sell?: boolean }) {
         <div className="rounded-lg border border-dark-border p-4">
           <p className="text-xs text-dark-foreground/50">{sell ? "You receive" : "You pay"}</p>
           <p className="mt-2 text-2xl font-bold text-dark-foreground">
-            D {sell ? "14,700" : "14,850"}
+            D {sell ? "7,300" : "7,500"}
           </p>
         </div>
         <div className="flex items-center justify-between border-b border-dark-border py-3 text-sm">
