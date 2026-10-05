@@ -375,17 +375,14 @@ function IntroAndFeatures() {
               Stablecoins are becoming a practical way to move, hold, and use digital money.
             </p>
             <p className="mt-4 text-lg leading-8 text-dark-foreground/65">
-              From paying for business expenses and accessing global services to moving money
-              across borders, DX is being built to make digital finance easier and more
-              accessible for people in Africa.
+              From paying for business expenses and accessing global services to moving money across
+              borders, DX is being built to make digital finance easier and more accessible for
+              people in Africa.
             </p>
           </div>
           <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {audiences.map(([Icon, title, text]) => (
-              <div
-                key={title}
-                className="rounded-xl border border-dark-border bg-dark-surface p-6"
-              >
+              <div key={title} className="rounded-xl border border-dark-border bg-dark-surface p-6">
                 <span className="grid size-11 place-items-center rounded-lg bg-primary/10 text-primary">
                   <Icon className="size-5" />
                 </span>
