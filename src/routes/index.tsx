@@ -350,11 +350,12 @@ const features = [
 ] satisfies ReadonlyArray<readonly [LucideIcon, string, string]>;
 
 const audiences = [
-  [CandlestickChart, "Forex Traders"],
-  [Laptop, "Freelancers"],
-  [Store, "Online Workers & Businesses"],
-  [PiggyBank, "Digital Dollar Savers"],
-] satisfies ReadonlyArray<readonly [LucideIcon, string]>;
+  [CandlestickChart, "Forex Traders", "Fund and withdraw from your trading accounts."],
+  [Laptop, "Freelancers", "Receive and move money for your work."],
+  [Store, "Businesses", "Make and manage digital payments."],
+  [Sparkles, "Online Creators", "Access financial tools for the digital economy."],
+  [PiggyBank, "Everyday Users", "Move between digital and local money."],
+] satisfies ReadonlyArray<readonly [LucideIcon, string, string]>;
 
 const WHATSAPP_URL =
   "https://wa.me/220866714855?text=" +
@@ -364,32 +365,34 @@ function IntroAndFeatures() {
   return (
     <>
       <section id="wallet" className="bg-dark py-24 sm:py-32">
-        <div className="mx-auto grid max-w-7xl items-center gap-14 px-5 sm:px-8 lg:grid-cols-[1.1fr_.9fr] lg:px-10">
-          <div>
+        <div className="mx-auto max-w-7xl px-5 sm:px-8 lg:px-10">
+          <div className="max-w-3xl">
             <p className="text-xs font-extrabold text-primary">BUILT FOR REAL LIFE</p>
             <h2 className="mt-4 text-4xl font-extrabold leading-tight text-dark-foreground sm:text-5xl">
-              Designed for the people who move the world.
+              Designed for the people who move money around the world.
             </h2>
-            <p className="mt-6 max-w-xl text-lg leading-8 text-dark-foreground/65">
-              USDT is made for real world utility. Everyday Africans use it for business
-              transactions, bill payments, and to hedge against inflation.
+            <p className="mt-6 text-lg leading-8 text-dark-foreground/65">
+              Stablecoins are becoming a practical way to move, hold, and use digital money.
             </p>
-            <div className="mt-10 grid gap-4 sm:grid-cols-2">
-              {audiences.map(([Icon, title]) => (
-                <div
-                  key={title}
-                  className="flex items-center gap-4 rounded-xl border border-dark-border bg-dark-surface p-5"
-                >
-                  <span className="grid size-11 shrink-0 place-items-center rounded-lg bg-primary/10 text-primary">
-                    <Icon className="size-5" />
-                  </span>
-                  <span className="font-bold text-dark-foreground">{title}</span>
-                </div>
-              ))}
-            </div>
+            <p className="mt-4 text-lg leading-8 text-dark-foreground/65">
+              From paying for business expenses and accessing global services to moving money
+              across borders, DX is being built to make digital finance easier and more
+              accessible for people in Africa.
+            </p>
           </div>
-          <div className="mx-auto w-full max-w-md">
-            <WalletPhone />
+          <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {audiences.map(([Icon, title, text]) => (
+              <div
+                key={title}
+                className="rounded-xl border border-dark-border bg-dark-surface p-6"
+              >
+                <span className="grid size-11 place-items-center rounded-lg bg-primary/10 text-primary">
+                  <Icon className="size-5" />
+                </span>
+                <h3 className="mt-5 font-bold text-dark-foreground">{title}</h3>
+                <p className="mt-2 text-sm leading-6 text-dark-foreground/60">{text}</p>
+              </div>
+            ))}
           </div>
         </div>
       </section>
