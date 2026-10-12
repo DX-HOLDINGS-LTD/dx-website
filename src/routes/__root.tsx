@@ -94,6 +94,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "author", content: "DX" },
       { name: "theme-color", content: "#0B0F0D" },
       { property: "og:site_name", content: "DX" },
+      { name: "google-site-verification", content: "pWey-jSAI-LxF9l6BtCCOgO__LqhvFQy4aeQrpFA2XE" },
       { property: "og:type", content: "website" },
       { property: "og:title", content: "DX — Digital Dollars, Made Simple" },
       {
