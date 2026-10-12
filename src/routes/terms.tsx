@@ -18,7 +18,11 @@ export const Route = createFileRoute("/terms")({
         property: "og:description",
         content: "Terms of Service and conditions of use for DX in The Gambia.",
       },
+      { property: "og:type", content: "article" },
+      { name: "twitter:card", content: "summary_large_image" },
+      { property: "og:url", content: "https://dxcompany.org/terms" },
     ],
+    links: [{ rel: "canonical", href: "https://dxcompany.org/terms" }],
   }),
   component: TermsPage,
 });

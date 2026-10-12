@@ -18,7 +18,11 @@ export const Route = createFileRoute("/privacy")({
         property: "og:description",
         content: "Learn how DX protects your privacy, waitlist data, and personal information.",
       },
+      { property: "og:type", content: "article" },
+      { name: "twitter:card", content: "summary_large_image" },
+      { property: "og:url", content: "https://dxcompany.org/privacy" },
     ],
+    links: [{ rel: "canonical", href: "https://dxcompany.org/privacy" }],
   }),
   component: PrivacyPage,
 });
