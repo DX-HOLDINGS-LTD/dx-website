@@ -100,7 +100,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         property: "og:description",
         content: "Buy, sell, send and manage USDT through DX, built for The Gambia.",
       },
-      { property: "og:image", content: "/og-preview.jpg" },
+      { property: "og:image", content: "https://dxcompany.org/og-preview.jpg" },
       { property: "og:image:width", content: "1200" },
       { property: "og:image:height", content: "630" },
       { property: "og:image:alt", content: "DX — Digital Dollars, Made Simple" },
@@ -111,7 +111,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         name: "twitter:description",
         content: "Buy, sell, send and manage USDT through DX, built for The Gambia.",
       },
-      { name: "twitter:image", content: "/og-preview.jpg" },
+      { name: "twitter:image", content: "https://dxcompany.org/og-preview.jpg" },
     ],
     links: [
       {
@@ -134,12 +134,29 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
             {
               "@type": "Organization",
               name: "DX",
+              url: "https://dxcompany.org",
+              logo: "https://dxcompany.org/dx-logo.png",
+              email: "founder@dxcompany.org",
+              telephone: "+220866714855",
+              areaServed: "GM",
               description:
                 "Your Gateway to Global Finance. Buy, sell, send and manage USDT through DX, built for The Gambia.",
               address: {
                 "@type": "PostalAddress",
                 addressCountry: "GM",
               },
+              contactPoint: {
+                "@type": "ContactPoint",
+                contactType: "customer support",
+                email: "founder@dxcompany.org",
+                telephone: "+220866714855",
+                areaServed: "GM",
+              },
+            },
+            {
+              "@type": "WebSite",
+              name: "DX",
+              url: "https://dxcompany.org",
             },
             {
               "@type": "FinancialProduct",
